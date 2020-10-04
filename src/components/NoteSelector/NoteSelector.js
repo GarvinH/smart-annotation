@@ -17,6 +17,12 @@ export default class NoteSelector extends React.Component {
           <Modal.Title>Topic/Note Selector</Modal.Title>
         </Modal.Header>
         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <div className="mr-auto">
+            <input></input>
+            <button style={{marginLeft: "1rem"}}>Create new topic</button>
+          </div>
+        </Modal.Footer>
       </Modal>
     );
   }

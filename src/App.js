@@ -1,5 +1,6 @@
 import React from "react";
 import NoteSelector from "./components/NoteSelector/NoteSelector";
+import Notes from "./backend/Notes/notes";
 
 class App extends React.Component {
   state = {
@@ -10,6 +11,7 @@ class App extends React.Component {
     this.setState({ showNoteSelctor: showNoteSelctor });
 
   render() {
+    console.log(Notes.notes)
     return (
       <div style={{ textAlign: "center" }}>
         <button
