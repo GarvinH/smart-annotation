@@ -11,7 +11,7 @@ class App extends React.Component {
     this.setState({ showNoteSelctor: showNoteSelctor });
 
   render() {
-    console.log(Notes.notes)
+    console.log(Notes.getNotes())
     return (
       <div style={{ textAlign: "center" }}>
         <button

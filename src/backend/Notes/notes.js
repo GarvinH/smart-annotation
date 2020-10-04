@@ -1,5 +1,15 @@
 export default class Notes {
-    static notes = ["test"]
+  static notes = [
+    { topic: "topic1", notes: [] },
+    { topic: "topic2", notes: [] },
+  ];
+  static initiated = false;
 
-    get notes() { return this.notes }
+  static getNotes() {
+    if (this.initiated) {
+      return this.notes;
+    } else {
+      return [];
+    }
+  }
 }
