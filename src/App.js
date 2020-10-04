@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import NoteSelector from "./components/NoteSelector/NoteSelector";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends React.Component {
+  state = {
+    showNoteSelctor: true,
+  };
+
+  setShowNoteSelector = (showNoteSelctor) =>
+    this.setState({ showNoteSelctor: showNoteSelctor });
+
+  render() {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <button
+          style={{ position: "absolute" }}
+          onClick={() => this.setShowNoteSelector(true)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          Select Topic/Note
+        </button>
+        <NoteSelector
+          show={this.state.showNoteSelctor}
+          controlShow={this.setShowNoteSelector}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
