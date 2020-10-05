@@ -1,7 +1,6 @@
 import React from "react";
 import NoteSelector from "./components/NoteSelector/NoteSelector";
 import Notes from "./backend/Notes/notes";
-import FileInterface from "./backend/FileSystem/fileio";
 
 class App extends React.Component {
   state = {
@@ -25,7 +24,6 @@ class App extends React.Component {
         >
           Select Topic/Note
         </button>
-        <button style={{marginTop: "10rem"}}onClick={FileInterface.saveMedia}>test</button>
         <NoteSelector
           show={this.state.showNoteSelctor}
           controlShow={this.setShowNoteSelector}
