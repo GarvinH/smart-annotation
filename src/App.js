@@ -13,6 +13,10 @@ class App extends React.Component {
 
   render() {
     console.log(Notes.getNotes())
+    Notes.setNotes([
+      { topic: "topic1", notes: [] },
+      { topic: "topic2", notes: [] },
+    ])
     return (
       <div style={{ textAlign: "center" }}>
         <button
