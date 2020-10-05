@@ -11,7 +11,6 @@ export default class FileInterface {
   static mediaPath = path.join(this.userDataPath, "/media/");
 
   static saveNotes(notes) {
-    console.log(this.notePath);
     fs.writeFileSync(this.notePath, JSON.stringify(notes));
   }
 
@@ -22,7 +21,6 @@ export default class FileInterface {
 
   static saveMedia = async () => {
     try {
-      console.log(this.notePath);
       const userMedia = await dialog.showOpenDialog({
         properties: ["openFile"],
       });
