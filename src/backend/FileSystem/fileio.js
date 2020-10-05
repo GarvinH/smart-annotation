@@ -8,8 +8,10 @@ export default class FileInterface {
     "userData"
   );
   static notePath = path.join(this.userDataPath, "notes.json");
+  static mediaPath = path.join(this.userDataPath, "/media/");
 
   static saveNotes(notes) {
+    console.log(this.notePath);
     fs.writeFileSync(this.notePath, JSON.stringify(notes));
   }
 
@@ -18,11 +20,22 @@ export default class FileInterface {
     return notes;
   }
 
-  static async saveMedia() {
-    const media= await dialog.showOpenDialog({ properties: ["openFile"] });
-    const mediaPath = media.filePaths[0]
-    console.log(mediaPath)
-    const mediaName = path.basename(mediaPath);
-    console.log(mediaName);
-  }
+  static saveMedia = async () => {
+    try {
+      console.log(this.notePath);
+      const userMedia = await dialog.showOpenDialog({
+        properties: ["openFile"],
+      });
+      const userMediaPath = userMedia.filePaths[0];
+      const userMediaName = path.basename(userMediaPath);
+      if (!fs.existsSync(this.mediaPath)) {
+        fs.mkdirSync(this.mediaPath);
+      }
+      const storedMediaLocation = path.join(this.mediaPath, userMediaName)
+      fs.copyFileSync(userMediaPath, storedMediaLocation);
+      return storedMediaLocation;
+    } catch {
+      throw new Error("No received media files.");
+    }
+  };
 }
