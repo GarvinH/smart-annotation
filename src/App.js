@@ -4,21 +4,23 @@ import Notes from "./backend/Notes/notes";
 import { MediaHandler } from "./components/MediaHandler/MediaHandler";
 
 class App extends React.Component {
-  state = {
-    showNoteSelctor: true,
-  };
+  constructor(props) {
+    super(props);
+    const notes = Notes.getNotes();
+    console.log(notes);
+    this.state = {
+      notes: notes,
+      showNoteSelctor: true,
+    };
+  }
 
   setShowNoteSelector = (showNoteSelctor) =>
     this.setState({ showNoteSelctor: showNoteSelctor });
 
   render() {
-    console.log(Notes.getNotes())
-    Notes.setNotes([
-      { topic: "topic1", notes: [] },
-      { topic: "topic2", notes: [] },
-    ])
+    const { notes, showNoteSelctor } = this.state;
     return (
-      <div style={{ textAlign: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           style={{ position: "absolute" }}
           onClick={() => this.setShowNoteSelector(true)}
@@ -27,8 +29,9 @@ class App extends React.Component {
         </button>
         <MediaHandler />
         <NoteSelector
-          show={this.state.showNoteSelctor}
+          show={showNoteSelctor}
           controlShow={this.setShowNoteSelector}
+          notes={notes}
         />
       </div>
     );
