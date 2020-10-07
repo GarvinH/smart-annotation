@@ -3,8 +3,8 @@ import FileInterface from "../FileSystem/fileio";
 
 export default class Notes {
   static notes = [
-    { topic: "topic1", notes: [] },
-    { topic: "topic2", notes: [] },
+    { topic: "Topic 1", notes: [{title: "Note 1", date: new Date()}, {title: "Note 2", date: new Date()}] },
+    { topic: "Topic 2", notes: [{title: "Note 1", date: new Date()}] },
   ];
   static initiated = false;
 
