@@ -11,11 +11,12 @@ function createWindow () {
       nodeIntegration: true,
       enableRemoteModule: true
     },
-    fullscreen: true
+    // fullscreen: true
   })
 
   // and load the index.html of the app.
   win.loadURL(isDev?'http://localhost:3000/':`file://${path.join(__dirname, "../build/index.html")}`)
+  win.maximize();
 
   // Open the DevTools.
   win.webContents.openDevTools()
