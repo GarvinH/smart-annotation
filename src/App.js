@@ -2,6 +2,7 @@ import React from "react";
 import NoteSelector from "./components/NoteSelector/NoteSelector";
 import Notes from "./backend/Notes/notes";
 import FileInterface from "./backend/FileSystem/fileio";
+import {StateExample} from "./components/practice/StateExample.js"
 
 class App extends React.Component {
   state = {
@@ -19,12 +20,14 @@ class App extends React.Component {
     ])
     return (
       <div style={{ textAlign: "center" }}>
-        <button
+        {/* <button
           style={{ position: "absolute" }}
           onClick={() => this.setShowNoteSelector(true)}
         >
           Select Topic/Note
-        </button>
+        </button> */}
+        <StateExample name="Joe"/>
+        <StateExample name="Jane"/>
         <button style={{marginTop: "50%"}} onClick={FileInterface.saveMedia}>Test</button>
         <NoteSelector
           show={this.state.showNoteSelctor}
