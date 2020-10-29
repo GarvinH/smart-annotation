@@ -7,10 +7,13 @@ import NoteEditor from "./components/NoteEditor/NoteEditor.js";
 class App extends React.Component {
   state = {
     showNoteSelctor: true,
+    showNote: false,
   };
 
   setShowNoteSelector = (showNoteSelctor) =>
     this.setState({ showNoteSelctor: showNoteSelctor });
+
+  setShowNote = (showNote) => this.setState({showNote: showNote});
 
   render() {
     console.log(Notes.getNotes())
@@ -26,12 +29,15 @@ class App extends React.Component {
         >
           Select Topic/Note
         </button>
-        <NoteEditor show={this.state.showNoteSelctor} controlShow={this.setShowNoteSelector} title="Test title" info="Test info" keyword="Test keywords" media="pdf file link"/>
         <button style={{marginTop: "50%"}} onClick={FileInterface.saveMedia}>Test</button>
-        {/* <NoteSelector
+        <NoteSelector
           show={this.state.showNoteSelctor}
           controlShow={this.setShowNoteSelector}
-        /> */}
+        />
+        <button
+          style={{textAlign: "center"}}
+          onClick={() => this.setShowNote(true)}>Open note</button>
+        <NoteEditor show={this.state.showNote} controlShow={this.setShowNote}/>
       </div>
     );
   }
