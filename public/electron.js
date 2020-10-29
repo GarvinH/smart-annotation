@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, protocol } = require('electron')
 const path = require("path")
 const isDev = require("electron-is-dev")
 
@@ -8,8 +8,9 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
     },
     // fullscreen: true
   })
@@ -21,6 +22,13 @@ function createWindow () {
   // Open the DevTools.
   win.webContents.openDevTools()
 }
+
+app.whenReady().then(() => {
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const pathname = decodeURI(request.url.replace('file:///', ''));
+    callback(pathname);
+  });
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
