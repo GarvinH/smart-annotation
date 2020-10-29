@@ -1,3 +1,4 @@
+import { Modal } from "react-bootstrap";
 import FileInterface from "../FileSystem/fileio";
 
 export default class Notes {
