@@ -19,7 +19,7 @@ export default class NoteSelector extends React.Component {
   };
 
   render() {
-    const { show, notes } = this.props;
+    const { show, notes, addNote } = this.props;
 
     const accordion_children = _.map(notes, (topic, index) => (
       <Card key={index}>
@@ -30,13 +30,14 @@ export default class NoteSelector extends React.Component {
             {topic.topic}
           </Accordion.Toggle>
 
-          <Button variant="dark">Add Note</Button>
+          <Button variant="dark" onClick={() => addNote(index)}>
+            Add Note
+          </Button>
         </Card.Header>
         <Accordion.Collapse eventKey={`${index}`}>
           <Card.Body>
             {_.map(topic.notes, (note) => (
               <Fragment>
-                {console.log(note)}
                 <Row>
                   <Col>{note.title}</Col>
                   <Col>{new Date(note.date).toDateString()}</Col>
