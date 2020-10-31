@@ -39,8 +39,15 @@ export default class NoteSelector extends React.Component {
             {_.map(topic.notes, (note) => (
               <Fragment>
                 <Row>
-                  <Col>{note.title}</Col>
+                  <Col style={{ display: "flex", alignItems: "center" }}>
+                    {note.title}
+                  </Col>
+                  <Button variant="dark">Edit Note</Button>
                   <Col>{new Date(note.date).toDateString()}</Col>
+                  <Button style={{ margin: "0 1rem" }} variant="dark">
+                    View Connected Notes
+                  </Button>
+                  <Button variant="dark">Add Connections</Button>
                 </Row>
               </Fragment>
             ))}
