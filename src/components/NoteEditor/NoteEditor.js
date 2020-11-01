@@ -25,7 +25,6 @@ export default class NoteEditor extends React.Component{
     keywordChange = (event) => this.setState({noteKeyword: event.target.value});
 
     render(){
-        //const {show} = this.props;
         const{noteTitle, noteInfo, noteKeyword, noteMedia} = this.state;
 
         return(
@@ -37,9 +36,7 @@ export default class NoteEditor extends React.Component{
                 <body style={{wordWrap:"break-word", overflow:"hidden"}}>
                     <div className="note-editor">
                         <Card>
-                            {/* <Button variant="secondary">Add Media (PDF and Images are supported)</Button> */}
                             <MediaHandler /> 
-                            <MediaHandler mediaLocation="C:\Users\carin\Pictures\Taobao\harry-potter-note-pad-01.jpg"/>
                             <Card.Body>
                                 <Card.Title>
                                     <InputGroup>
