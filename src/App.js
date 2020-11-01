@@ -23,17 +23,17 @@ class App extends React.Component {
     ])
     return (
       <div style={{ textAlign: "center" }}>
-        <button
+        {/* <button
           style={{ position: "absolute" }}
           onClick={() => this.setShowNoteSelector(true)}
         >
           Select Topic/Note
         </button>
-        <MediaHandler />
+        <MediaHandler mediaLocation="C:\Users\carin\Pictures\Taobao\harry-potter-note-pad-01.jpg"/> */}
         <button
           style={{textAlign: "center"}}
           onClick={() => this.setShowNote(true)}>Open note</button>
-        <NoteEditor show={this.state.showNote} controlShow={this.setShowNote}/>
+        <NoteEditor show={this.state.showNote} controlShow={this.setShowNote} title= "Untitled note" info="Info" keyword="Enter keywords" media="C:\Users\carin\Pictures\Taobao\harry-potter-note-pad-01.jpg"/>
         <NoteSelector
           show={this.state.showNoteSelctor}
           controlShow={this.setShowNoteSelector}
