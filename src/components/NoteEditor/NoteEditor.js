@@ -32,9 +32,9 @@ export default class NoteEditor extends React.Component{
             console.log("\n\nNote title: ",noteTitle,"\nNote Info: ",noteInfo,"\nNoteKeyword: ",noteKeyword),
             <div style = {{textAlign: "left"}}>
                 <header>
-                    <h2>&ensp; {noteTitle}</h2>
+                    <h2 style={{paddingLeft:"30px"}}>{noteTitle}</h2>
                 </header>
-                <body>
+                <body style={{wordWrap:"break-word", overflow:"hidden"}}>
                     <div className="note-editor">
                         <Card>
                             {/* <Button variant="secondary">Add Media (PDF and Images are supported)</Button> */}
