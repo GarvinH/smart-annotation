@@ -1,9 +1,10 @@
 import React from "react";
+import _ from "lodash";
+import { Button } from "react-bootstrap";
+
 import NoteSelector from "./components/NoteSelector/NoteSelector";
 import Notes from "./backend/Notes/notes";
 import NoteEditor from "./components/NoteEditor/NoteEditor.js";
-import { MediaHandler } from "./components/MediaHandler/MediaHandler";
-import _ from "lodash";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,14 +14,11 @@ class App extends React.Component {
     this.state = {
       notes: notes,
       showNoteSelctor: true,
-      showNote: false,
     };
   }
 
   setShowNoteSelector = (showNoteSelctor) =>
     this.setState({ showNoteSelctor: showNoteSelctor });
-
-  setShowNote = (showNote) => this.setState({ showNote: showNote });
 
   addNote = (topicIndex) => {
     const { notes } = this.state;
@@ -49,29 +47,27 @@ class App extends React.Component {
 
   addTopic = (topicName) => {
     const { notes } = this.state;
-    const newTopic = {topic: topicName || `Topic #${notes.length+1}`, note:[]}
-    this.setState({notes: [...notes, newTopic]})
-  }
+    const newTopic = {
+      topic: topicName || `Topic #${notes.length + 1}`,
+      note: [],
+    };
+    this.setState({ notes: [...notes, newTopic] });
+  };
 
   render() {
     const { notes, showNoteSelctor } = this.state;
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <button
-          style={{ position: "absolute" }}
-          onClick={() => this.setShowNoteSelector(true)}
-        >
-          Select Topic/Note
-        </button>
-        <button
-          style={{ textAlign: "center" }}
-          onClick={() => this.setShowNote(true)}
-        >
-          Open note
-        </button>
+      <>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            variant="dark"
+            onClick={() => this.setShowNoteSelector(true)}
+          >
+            Select Topic/Note
+          </Button>
+        </div>
+
         <NoteEditor
-          show={this.state.showNote}
-          controlShow={this.setShowNote}
           title="Untitled note"
           info="Info"
           keyword="Enter keywords"
@@ -84,7 +80,7 @@ class App extends React.Component {
           addNote={this.addNote}
           addTopic={this.addTopic}
         />
-      </div>
+      </>
     );
   }
 }

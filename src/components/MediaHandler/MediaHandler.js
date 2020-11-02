@@ -7,6 +7,7 @@ import fs from "fs";
 export class MediaHandler extends React.Component {
   state = {
     mime: null,
+    error: false,
   };
 
   obtainMedia = async () => {
@@ -21,6 +22,17 @@ export class MediaHandler extends React.Component {
     const mime = (await FileType.fromStream(stream)).mime;
     console.log(mime);
     return mime;
+  };
+
+  loadMedia = () => {
+    const { mediaLocation } = this.props;
+    if (!_.isNil(mediaLocation)) {
+      this.readMediaType(mediaLocation)
+        .then((mime) => {
+          this.setState({ mime: mime, error: false });
+        })
+        .catch(() => this.setState({ mime: "error", error: true }));
+    }
   };
 
   render() {
@@ -42,12 +54,28 @@ export class MediaHandler extends React.Component {
         </div>
       );
     } else {
-      const { mime } = this.state;
+      const { mime, error } = this.state;
       const fileLocation = `file://${mediaLocation}`;
 
       try {
         if (_.isNil(mime)) {
           return null;
+        } else if (error) {
+          return (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <h4>Failed to read file, try again</h4>
+              <button onClick={this.obtainMedia}>Add Media</button>
+            </div>
+          );
         } else if (_.includes(mime, "image")) {
           return (
             <div
@@ -110,7 +138,7 @@ export class MediaHandler extends React.Component {
               flexDirection: "column",
             }}
           >
-            <h4>Failed to add file, try again</h4>
+            <h4>Failed to read file, try again</h4>
             <button onClick={this.obtainMedia}>Add Media</button>
           </div>
         );
@@ -119,11 +147,10 @@ export class MediaHandler extends React.Component {
   }
 
   componentDidMount() {
-    const { mediaLocation } = this.props;
-    if (!_.isNil(mediaLocation)) {
-      this.readMediaType(mediaLocation).then((mime) => {
-        this.setState({ mime: mime });
-      });
-    }
+    this.loadMedia();
+  }
+
+  componentDidUpdate() {
+    this.loadMedia();
   }
 }
