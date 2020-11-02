@@ -37,59 +37,49 @@ export default class NoteEditor extends React.Component {
     const { noteTitle, noteInfo, noteKeyword, noteMedia } = this.state;
 
     return (
-      console.log(
-        "\n\nNote title: ",
-        noteTitle,
-        "\nNote Info: ",
-        noteInfo,
-        "\nNoteKeyword: ",
-        noteKeyword
-      ),
-      (
-        <div style={{ textAlign: "left" }}>
-          <header>
-            <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
-          </header>
-          <body style={{ wordWrap: "break-word", overflow: "hidden" }}>
-            <div className="note-editor">
-              <Card>
-                <MediaHandler mediaLocation={noteMedia} />
-                <Card.Body>
-                  <Card.Title>
-                    <InputGroup>
-                      <FormControl
-                        aria-label="Type your note title here"
-                        placeholder="Untitled Note"
-                        defaultValue={noteTitle}
-                        onChange={this.titleChange}
-                      />
-                    </InputGroup>
-                  </Card.Title>
+      <div style={{ textAlign: "left" }}>
+        <header>
+          <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
+        </header>
+        <body style={{ wordWrap: "break-word", overflow: "hidden" }}>
+          <div className="note-editor">
+            <Card>
+              <MediaHandler mediaLocation={noteMedia} />
+              <Card.Body>
+                <Card.Title>
                   <InputGroup>
                     <FormControl
-                      style={{ height: 200 }}
-                      as="textarea"
-                      aria-label="Type your note here"
-                      placeholder="Type your note here"
-                      defaultValue={noteInfo}
-                      onChange={this.infoChange}
+                      aria-label="Type your note title here"
+                      placeholder="Untitled Note"
+                      defaultValue={noteTitle}
+                      onChange={this.titleChange}
                     />
                   </InputGroup>
-                  <InputGroup>
-                    <FormControl
-                      as="textarea"
-                      aria-label="Type your keywords here"
-                      placeholder="Add keywords..."
-                      defaultValue={noteKeyword}
-                      onChange={this.keywordChange}
-                    />
-                  </InputGroup>
-                </Card.Body>
-              </Card>
-            </div>
-          </body>
-        </div>
-      )
+                </Card.Title>
+                <InputGroup>
+                  <FormControl
+                    style={{ height: 200 }}
+                    as="textarea"
+                    aria-label="Type your note here"
+                    placeholder="Type your note here"
+                    defaultValue={noteInfo}
+                    onChange={this.infoChange}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <FormControl
+                    as="textarea"
+                    aria-label="Type your keywords here"
+                    placeholder="Add keywords..."
+                    defaultValue={noteKeyword}
+                    onChange={this.keywordChange}
+                  />
+                </InputGroup>
+              </Card.Body>
+            </Card>
+          </div>
+        </body>
+      </div>
     );
   }
 }

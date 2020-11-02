@@ -48,8 +48,8 @@ export default class NoteSelector extends React.Component {
         </Card.Header>
         <Accordion.Collapse eventKey={`${index}`}>
           <Card.Body>
-            {_.map(topic.notes, (note) => (
-              <Fragment>
+            {_.map(topic.notes, (note, index) => (
+              <Fragment key={index}>
                 <Row>
                   <Col style={{ display: "flex", alignItems: "center" }}>
                     {note.title}
