@@ -31,6 +31,7 @@ class App extends React.Component {
           notes: [
             ...topic.notes,
             {
+              id: Date.now(),
               title: `Note ${topic.notes.length + 1}`,
               date: new Date(),
               info: "",
