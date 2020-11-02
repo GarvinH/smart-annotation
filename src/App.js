@@ -47,6 +47,12 @@ class App extends React.Component {
     this.setState({ notes: newNotes });
   };
 
+  addTopic = (topicName) => {
+    const { notes } = this.state;
+    const newTopic = {topic: topicName || `Topic #${notes.length+1}`, note:[]}
+    this.setState({notes: [...notes, newTopic]})
+  }
+
   render() {
     const { notes, showNoteSelctor } = this.state;
     return (
@@ -76,6 +82,7 @@ class App extends React.Component {
           controlShow={this.setShowNoteSelector}
           notes={notes}
           addNote={this.addNote}
+          addTopic={this.addTopic}
         />
       </div>
     );
