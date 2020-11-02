@@ -12,14 +12,26 @@ import {
 import _ from "lodash";
 
 export default class NoteSelector extends React.Component {
+  state = {
+    topicNameInput: "",
+  };
+
   hideModal = () => {
     const { controlShow } = this.props;
 
     controlShow(false);
   };
 
+  addTopic = () => {
+    const { addTopic } = this.props;
+    const { topicNameInput } = this.state;
+    addTopic(topicNameInput);
+    this.setState({ topicNameInput: "" });
+  };
+
   render() {
     const { show, notes, addNote } = this.props;
+    const { topicNameInput } = this.state;
 
     const accordion_children = _.map(notes, (topic, index) => (
       <Card key={index}>
@@ -71,10 +83,18 @@ export default class NoteSelector extends React.Component {
                 <FormControl
                   placeholder="Topic name"
                   style={{ display: "inline-block" }}
+                  value={topicNameInput}
+                  onChange={(e) =>
+                    this.setState({ topicNameInput: e.target.value })
+                  }
                 />
               </Col>
               <Col>
-                <Button variant="dark" style={{ marginLeft: "1rem" }}>
+                <Button
+                  variant="dark"
+                  style={{ marginLeft: "1rem" }}
+                  onClick={this.addTopic}
+                >
                   Create new topic
                 </Button>
               </Col>
