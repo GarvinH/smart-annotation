@@ -11,9 +11,10 @@ export class MediaHandler extends React.Component {
   };
 
   obtainMedia = async () => {
+    const { mediaChanged } = this.props;
     try {
       const location = await FileInterface.saveMedia();
-      //update note location here
+      mediaChanged(location);
     } catch {}
   };
 
