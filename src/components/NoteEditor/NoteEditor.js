@@ -5,24 +5,25 @@ import { MediaHandler } from "../MediaHandler/MediaHandler.js";
 export default class NoteEditor extends React.Component {
   constructor(props) {
     super(props);
-    const title = props.title;
-    const info = props.info;
-    const keyword = props.keyword;
-    const media = props.media;
+    const note = props.note;
+    const title = note.title;
+    const info = note.info;
+    const keywords = note.keywords;
+    const media = note.media;
     this.state = {
       noteTitle: title,
       noteInfo: info,
-      noteKeyword: keyword,
+      noteKeywords: keywords,
       noteMedia: media,
     };
   }
 
   noteSaved = () => {
-    const { noteTitle, noteInfo, noteKeyword, noteMedia } = this.state;
+    const { noteTitle, noteInfo, noteKeywords, noteMedia } = this.state;
     this.setState({
       noteTitle: noteTitle,
       noteInfo: noteInfo,
-      noteKeyword: noteKeyword,
+      noteKeywords: noteKeywords,
       noteMedia: noteMedia,
     });
   };
@@ -31,17 +32,17 @@ export default class NoteEditor extends React.Component {
 
   infoChange = (event) => this.setState({ noteInfo: event.target.value });
 
-  keywordChange = (event) => this.setState({ noteKeyword: event.target.value });
+  keywordsChange = (event) => this.setState({ noteKeywords: event.target.value });
 
   render() {
-    const { noteTitle, noteInfo, noteKeyword, noteMedia } = this.state;
+    const { noteTitle, noteInfo, noteKeywords, noteMedia } = this.state;
 
     return (
       <div style={{ textAlign: "left" }}>
         <header>
           <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
         </header>
-        <body style={{ wordWrap: "break-word", overflow: "hidden" }}>
+        <div style={{ wordWrap: "break-word", overflow: "hidden" }}>
           <div className="note-editor">
             <Card>
               <MediaHandler mediaLocation={noteMedia} />
@@ -71,14 +72,14 @@ export default class NoteEditor extends React.Component {
                     as="textarea"
                     aria-label="Type your keywords here"
                     placeholder="Add keywords..."
-                    defaultValue={noteKeyword}
-                    onChange={this.keywordChange}
+                    defaultValue={noteKeywords}
+                    onChange={this.keywordsChange}
                   />
                 </InputGroup>
               </Card.Body>
             </Card>
           </div>
-        </body>
+        </div>
       </div>
     );
   }

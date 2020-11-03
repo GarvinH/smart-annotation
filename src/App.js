@@ -14,8 +14,18 @@ class App extends React.Component {
     this.state = {
       notes: notes,
       showNoteSelctor: true,
+      selectedNote: {
+        topicIndex: -1,
+        noteIndex: -1,
+      },
     };
   }
+
+  setNoteEditor = (topicIndex, noteIndex) => {
+    this.setState({
+      selectedNote: { topicIndex: topicIndex, noteIndex: noteIndex },
+    });
+  };
 
   setShowNoteSelector = (showNoteSelctor) =>
     this.setState({ showNoteSelctor: showNoteSelctor });
@@ -56,30 +66,25 @@ class App extends React.Component {
   };
 
   render() {
-    const { notes, showNoteSelctor } = this.state;
+    const { notes, showNoteSelctor, selectedNote } = this.state;
+    const { topicIndex, noteIndex } = selectedNote;
     return (
       <>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            variant="dark"
-            onClick={() => this.setShowNoteSelector(true)}
-          >
+          <Button variant="dark" onClick={() => this.setShowNoteSelector(true)}>
             Select Topic/Note
           </Button>
         </div>
-
-        <NoteEditor
-          title="Untitled note"
-          info="Info"
-          keyword="Enter keywords"
-          media="C:\Users\carin\Pictures\Taobao\harry-potter-note-pad-01.jpg"
-        />
+        {topicIndex >= 0 && noteIndex >= 0 && (
+          <NoteEditor note={notes[topicIndex].notes[noteIndex]} />
+        )}
         <NoteSelector
           show={showNoteSelctor}
           controlShow={this.setShowNoteSelector}
           notes={notes}
           addNote={this.addNote}
           addTopic={this.addTopic}
+          setNoteEditor={this.setNoteEditor}
         />
       </>
     );
