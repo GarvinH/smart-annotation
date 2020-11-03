@@ -136,7 +136,7 @@ export default class NoteEditor extends React.Component {
   }
 
   componentWillUnmount() {
-    const { updateNotes } = this.props;
+    const { updateNotes, setShowNoteSelector } = this.props;
     const {
       id,
       noteTitle,
@@ -159,5 +159,6 @@ export default class NoteEditor extends React.Component {
       topicIndex,
       noteIndex
     );
+    setShowNoteSelector(true)
   }
 }
