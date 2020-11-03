@@ -85,7 +85,7 @@ class App extends React.Component {
     const { notes } = this.state;
     const newTopic = {
       topic: topicName || `Topic #${notes.length + 1}`,
-      note: [],
+      notes: [],
     };
     this.setState({ notes: [...notes, newTopic] });
   };
