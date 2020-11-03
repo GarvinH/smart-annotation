@@ -45,7 +45,7 @@ class App extends React.Component {
               title: `Note ${topic.notes.length + 1}`,
               date: new Date(),
               info: "",
-              media: "",
+              media: null,
               keywords: "",
             },
           ],

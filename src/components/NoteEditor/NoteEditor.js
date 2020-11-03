@@ -3,19 +3,27 @@ import { InputGroup, FormControl, Card } from "react-bootstrap";
 import { MediaHandler } from "../MediaHandler/MediaHandler.js";
 
 export default class NoteEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    const note = props.note;
-    const title = note.title;
-    const info = note.info;
-    const keywords = note.keywords;
-    const media = note.media;
-    this.state = {
-      noteTitle: title,
-      noteInfo: info,
-      noteKeywords: keywords,
-      noteMedia: media,
-    };
+  state = {
+    id: 0,
+    noteTitle: "",
+    noteInfo: "",
+    noteKeywords: "",
+    noteMedia: "",
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const note = nextProps.note;
+
+    if (note.id !== prevState.id) {
+      return {
+        noteTitle: note.title,
+        noteInfo: note.info,
+        noteKeywords: note.keywords,
+        noteMedia: note.media,
+      };
+    }
+
+    return null;
   }
 
   noteSaved = () => {
@@ -32,7 +40,8 @@ export default class NoteEditor extends React.Component {
 
   infoChange = (event) => this.setState({ noteInfo: event.target.value });
 
-  keywordsChange = (event) => this.setState({ noteKeywords: event.target.value });
+  keywordsChange = (event) =>
+    this.setState({ noteKeywords: event.target.value });
 
   render() {
     const { noteTitle, noteInfo, noteKeywords, noteMedia } = this.state;
@@ -52,7 +61,7 @@ export default class NoteEditor extends React.Component {
                     <FormControl
                       aria-label="Type your note title here"
                       placeholder="Untitled Note"
-                      defaultValue={noteTitle}
+                      value={noteTitle}
                       onChange={this.titleChange}
                     />
                   </InputGroup>
@@ -63,7 +72,7 @@ export default class NoteEditor extends React.Component {
                     as="textarea"
                     aria-label="Type your note here"
                     placeholder="Type your note here"
-                    defaultValue={noteInfo}
+                    value={noteInfo}
                     onChange={this.infoChange}
                   />
                 </InputGroup>
@@ -72,7 +81,7 @@ export default class NoteEditor extends React.Component {
                     as="textarea"
                     aria-label="Type your keywords here"
                     placeholder="Add keywords..."
-                    defaultValue={noteKeywords}
+                    value={noteKeywords}
                     onChange={this.keywordsChange}
                   />
                 </InputGroup>
