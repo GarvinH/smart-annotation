@@ -1,5 +1,5 @@
 import React from "react";
-import { InputGroup, FormControl, Card } from "react-bootstrap";
+import { InputGroup, FormControl, Card, Button } from "react-bootstrap";
 import { MediaHandler } from "../MediaHandler/MediaHandler.js";
 
 export default class NoteEditor extends React.Component {
@@ -9,6 +9,9 @@ export default class NoteEditor extends React.Component {
     noteInfo: "",
     noteKeywords: "",
     noteMedia: "",
+    noteDate: null,
+    topicIndex: -1,
+    noteIndex: -1,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -16,10 +19,14 @@ export default class NoteEditor extends React.Component {
 
     if (note.id !== prevState.id) {
       return {
+        id: note.id,
         noteTitle: note.title,
         noteInfo: note.info,
         noteKeywords: note.keywords,
         noteMedia: note.media,
+        noteDate: note.date,
+        topicIndex: nextProps.topicIndex,
+        noteIndex: nextProps.noteIndex,
       };
     }
 
@@ -43,18 +50,53 @@ export default class NoteEditor extends React.Component {
   keywordsChange = (event) =>
     this.setState({ noteKeywords: event.target.value });
 
+  mediaChanged = (location) => this.setState({ noteMedia: location });
+
   render() {
-    const { noteTitle, noteInfo, noteKeywords, noteMedia } = this.state;
+    const {
+      id,
+      noteTitle,
+      noteInfo,
+      noteKeywords,
+      noteMedia,
+      noteDate,
+      topicIndex,
+      noteIndex,
+    } = this.state;
+    const { updateNotes } = this.props;
 
     return (
       <div style={{ textAlign: "left" }}>
         <header>
+          <Button
+            style={{ float: "right" }}
+            variant="dark"
+            onClick={() =>
+              updateNotes(
+                {
+                  id: id,
+                  title: noteTitle,
+                  date: noteDate,
+                  info: noteInfo,
+                  media: noteMedia,
+                  keywords: noteKeywords,
+                },
+                topicIndex,
+                noteIndex
+              )
+            }
+          >
+            Save
+          </Button>
           <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
         </header>
         <div style={{ wordWrap: "break-word", overflow: "hidden" }}>
           <div className="note-editor">
             <Card>
-              <MediaHandler mediaLocation={noteMedia} />
+              <MediaHandler
+                mediaLocation={noteMedia}
+                mediaChanged={this.mediaChanged}
+              />
               <Card.Body>
                 <Card.Title>
                   <InputGroup>
@@ -90,6 +132,32 @@ export default class NoteEditor extends React.Component {
           </div>
         </div>
       </div>
+    );
+  }
+
+  componentWillUnmount() {
+    const { updateNotes } = this.props;
+    const {
+      id,
+      noteTitle,
+      noteDate,
+      noteInfo,
+      noteMedia,
+      noteKeywords,
+      topicIndex,
+      noteIndex,
+    } = this.state;
+    updateNotes(
+      {
+        id: id,
+        title: noteTitle,
+        date: noteDate,
+        info: noteInfo,
+        media: noteMedia,
+        keywords: noteKeywords,
+      },
+      topicIndex,
+      noteIndex
     );
   }
 }
