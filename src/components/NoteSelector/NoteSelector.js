@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import {
-  Modal,
   Accordion,
   Card,
   Button,
@@ -16,12 +15,6 @@ export default class NoteSelector extends React.Component {
     topicNameInput: "",
   };
 
-  hideModal = () => {
-    const { controlShow } = this.props;
-
-    controlShow(false);
-  };
-
   addTopic = () => {
     const { addTopic } = this.props;
     const { topicNameInput } = this.state;
@@ -30,7 +23,7 @@ export default class NoteSelector extends React.Component {
   };
 
   render() {
-    const { show, notes, addNote, setNoteEditor } = this.props;
+    const { notes, addNote, setNoteEditor } = this.props;
     const { topicNameInput } = this.state;
 
     const accordion_children = _.map(notes, (topic, topicIndex) => (
@@ -78,39 +71,35 @@ export default class NoteSelector extends React.Component {
     ));
 
     return (
-      <Modal show={show} onHide={this.hideModal} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Topic/Note Selector</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Accordion>{accordion_children}</Accordion>
-        </Modal.Body>
-        <Modal.Footer>
-          <Form className="mr-auto">
-            <Form.Row>
-              <Col>
-                <FormControl
-                  placeholder="Topic name"
-                  style={{ display: "inline-block" }}
-                  value={topicNameInput}
-                  onChange={(e) =>
-                    this.setState({ topicNameInput: e.target.value })
-                  }
-                />
-              </Col>
-              <Col>
-                <Button
-                  variant="dark"
-                  style={{ marginLeft: "1rem" }}
-                  onClick={this.addTopic}
-                >
-                  Create new topic
-                </Button>
-              </Col>
-            </Form.Row>
-          </Form>
-        </Modal.Footer>
-      </Modal>
+      <Fragment>
+        <h1 style={{ textAlign: "center" }}>Topic/Note Selector</h1>
+        <br />
+        <Accordion>{accordion_children}</Accordion>
+        <br />
+        <Form className="mr-auto">
+          <Form.Row>
+            <Col>
+              <FormControl
+                placeholder="Topic name"
+                style={{ display: "inline-block" }}
+                value={topicNameInput}
+                onChange={(e) =>
+                  this.setState({ topicNameInput: e.target.value })
+                }
+              />
+            </Col>
+            <Col>
+              <Button
+                variant="dark"
+                style={{ marginLeft: "1rem" }}
+                onClick={this.addTopic}
+              >
+                Create new topic
+              </Button>
+            </Col>
+          </Form.Row>
+        </Form>
+      </Fragment>
     );
   }
 }

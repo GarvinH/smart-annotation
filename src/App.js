@@ -10,10 +10,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const notes = Notes.getNotes();
-    console.log(notes);
     this.state = {
       notes: notes,
-      showNoteSelctor: true,
+      showNoteSelector: true,
       selectedNote: {
         topicIndex: -1,
         noteIndex: -1,
@@ -49,12 +48,12 @@ class App extends React.Component {
   setNoteEditor = (topicIndex, noteIndex) => {
     this.setState({
       selectedNote: { topicIndex: topicIndex, noteIndex: noteIndex },
-      showNoteSelctor: false,
+      showNoteSelector: false,
     });
   };
 
-  setShowNoteSelector = (showNoteSelctor) =>
-    this.setState({ showNoteSelctor: showNoteSelctor });
+  setShowNoteSelector = (showNoteSelector) =>
+    this.setState({ showNoteSelector: showNoteSelector });
 
   addNote = (topicIndex) => {
     const { notes } = this.state;
@@ -92,19 +91,11 @@ class App extends React.Component {
   };
 
   render() {
-    const { notes, showNoteSelctor, selectedNote } = this.state;
+    const { notes, showNoteSelector, selectedNote } = this.state;
     const { topicIndex, noteIndex } = selectedNote;
     return (
       <>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          {topicIndex === -1 && noteIndex === -1 && (
-            <Button
-              variant="dark"
-              onClick={() => this.setShowNoteSelector(true)}
-            >
-              Select Topic/Note
-            </Button>
-          )}
           {topicIndex >= 0 && noteIndex >= 0 && (
             <Button variant="dark" onClick={() => this.setNoteEditor(-1, -1)}>
               Save and Close
@@ -117,16 +108,17 @@ class App extends React.Component {
             updateNotes={this.updateNotes}
             topicIndex={topicIndex}
             noteIndex={noteIndex}
+            setShowNoteSelector={this.setShowNoteSelector}
           />
         )}
-        <NoteSelector
-          show={showNoteSelctor}
-          controlShow={this.setShowNoteSelector}
-          notes={notes}
-          addNote={this.addNote}
-          addTopic={this.addTopic}
-          setNoteEditor={this.setNoteEditor}
-        />
+        {showNoteSelector && (
+          <NoteSelector
+            notes={notes}
+            addNote={this.addNote}
+            addTopic={this.addTopic}
+            setNoteEditor={this.setNoteEditor}
+          />
+        )}
       </>
     );
   }
