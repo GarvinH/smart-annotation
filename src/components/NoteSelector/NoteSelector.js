@@ -23,7 +23,7 @@ export default class NoteSelector extends React.Component {
   };
 
   render() {
-    const { notes, addNote, setNoteEditor } = this.props;
+    const { notes, addNote, setNoteEditor, topicIndex, noteIndex } = this.props;
     const { topicNameInput } = this.state;
 
     const accordion_children = _.map(notes, (topic, topicIndex) => (
@@ -53,11 +53,13 @@ export default class NoteSelector extends React.Component {
                   </Col>
                   <Button
                     variant="dark"
-                    onClick={() => setNoteEditor(topicIndex, noteIndex)}
+                    onClick={() => setNoteEditor(topicIndex, noteIndex, true)}
                   >
                     Edit Note
                   </Button>
-                  <Col>{new Date(note.date).toDateString()}</Col>
+                  <Col style={{ display: "flex", alignItems: "center" }}>
+                    {new Date(note.date).toDateString()}
+                  </Col>
                   <Button style={{ margin: "0 1rem" }} variant="dark">
                     View Connected Notes
                   </Button>
