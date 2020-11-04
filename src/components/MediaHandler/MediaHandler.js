@@ -151,7 +151,10 @@ export class MediaHandler extends React.Component {
     this.loadMedia();
   }
 
-  componentDidUpdate() {
-    this.loadMedia();
+  componentDidUpdate(prevProps) {
+    const { mediaLocation } = this.props;
+    if (prevProps.mediaLocation !== mediaLocation) {
+      this.loadMedia();
+    }
   }
 }
