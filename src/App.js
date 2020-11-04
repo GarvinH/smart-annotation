@@ -13,6 +13,7 @@ class App extends React.Component {
     this.state = {
       notes: notes,
       showNoteSelector: true,
+      showNoteEditor: false,
       selectedNote: {
         topicIndex: -1,
         noteIndex: -1,
@@ -20,7 +21,10 @@ class App extends React.Component {
     };
   }
 
-  saveNotes = () => Notes.setNotes(this.state.notes);
+  saveNotes = (newNotes) => {
+    this.setState({ notes: newNotes });
+    Notes.setNotes(newNotes);
+  };
 
   updateNotes = (updatedNote, topicIndex, noteIndex) => {
     const { notes } = this.state;
@@ -40,15 +44,14 @@ class App extends React.Component {
         };
       }
     });
-    console.log(newNotes, notes);
-    this.setState({ notes: newNotes });
-    Notes.setNotes(newNotes);
+    this.saveNotes(newNotes);
   };
 
-  setNoteEditor = (topicIndex, noteIndex) => {
+  setNoteEditor = (topicIndex, noteIndex, showNoteEditor) => {
     this.setState({
       selectedNote: { topicIndex: topicIndex, noteIndex: noteIndex },
       showNoteSelector: false,
+      showNoteEditor: showNoteEditor,
     });
   };
 
@@ -72,6 +75,7 @@ class App extends React.Component {
               info: "",
               media: null,
               keywords: "",
+              connectedNotes: [], //reference by id
             },
           ],
         };
@@ -91,18 +95,26 @@ class App extends React.Component {
   };
 
   render() {
-    const { notes, showNoteSelector, selectedNote } = this.state;
+    const {
+      notes,
+      showNoteSelector,
+      selectedNote,
+      showNoteEditor,
+    } = this.state;
     const { topicIndex, noteIndex } = selectedNote;
     return (
       <>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          {topicIndex >= 0 && noteIndex >= 0 && (
-            <Button variant="dark" onClick={() => this.setNoteEditor(-1, -1)}>
+          {showNoteEditor && (
+            <Button
+              variant="dark"
+              onClick={() => this.setNoteEditor(-1, -1, false)}
+            >
               Save and Close
             </Button>
           )}
         </div>
-        {topicIndex >= 0 && noteIndex >= 0 && (
+        {showNoteEditor && (
           <NoteEditor
             note={notes[topicIndex].notes[noteIndex]}
             updateNotes={this.updateNotes}
@@ -117,6 +129,8 @@ class App extends React.Component {
             addNote={this.addNote}
             addTopic={this.addTopic}
             setNoteEditor={this.setNoteEditor}
+            topicIndex={topicIndex}
+            noteIndex={noteIndex}
           />
         )}
       </>
