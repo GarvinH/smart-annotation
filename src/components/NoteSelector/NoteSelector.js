@@ -10,60 +10,131 @@ import {
 } from "react-bootstrap";
 import _ from "lodash";
 
+const toggle_list = (arr, val) =>
+  _.includes(arr, val) ? _.without(arr, val) : _.concat(arr, val);
+
 export default class NoteSelector extends React.Component {
   state = {
     topicNameInput: "",
+    connectingNotes: false,
+    showConnectedNotes: false, //for viewing connected notes ONLY (ie no changing if notes are connecting)
+    connectedNotes: [],
   };
 
-  addTopic = () => {
-    const { addTopic } = this.props;
-    const { topicNameInput } = this.state;
-    addTopic(topicNameInput);
-    this.setState({ topicNameInput: "" });
+  componentDidUpdate(prevProps, prevState) {
+    const { topicIndex, noteIndex, notes } = this.props;
+    if (topicIndex !== -1 && noteIndex !== -1) {
+      const newNote = notes[topicIndex].notes[noteIndex];
+
+      if (newNote.connectedNotes !== prevState.connectedNotes) {
+        this.setState({ connectedNotes: newNote.connectedNotes });
+      }
+    }
+  }
+
+  connectNote = (topicIndex, noteIndex) => {
+    const { selectNote } = this.props;
+    selectNote(topicIndex, noteIndex);
+    this.setState({ connectingNotes: true });
   };
+
+  finalizeNote = (id) => {
+    const { topicIndex, connectNotes } = this.props;
+    const { connectedNotes } = this.state;
+    this.setState({ connectingNotes: false, connectedNotes: [] });
+    connectNotes(id, connectedNotes, topicIndex);
+  };
+
+  toggleNote = (id) =>
+    this.setState((prevState) => ({
+      connectedNotes: toggle_list(prevState.connectedNotes, id),
+    }));
 
   render() {
     const { notes, addNote, setNoteEditor, topicIndex, noteIndex } = this.props;
-    const { topicNameInput } = this.state;
+    const {
+      topicNameInput,
+      connectedNotes,
+      connectingNotes,
+      showConnectedNotes,
+    } = this.state;
 
-    const accordion_children = _.map(notes, (topic, topicIndex) => (
-      <Card key={topicIndex}>
+    const accordion_children = _.map(notes, (topic, topicIdx) => (
+      <Card key={topicIdx}>
         <Card.Header
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Accordion.Toggle
-            as={Button}
-            variant="link"
-            eventKey={`${topicIndex}`}
-          >
+          <Accordion.Toggle as={Button} variant="link" eventKey={`${topicIdx}`}>
             {topic.topic}
           </Accordion.Toggle>
 
-          <Button variant="dark" onClick={() => addNote(topicIndex)}>
+          <Button variant="dark" onClick={() => addNote(topicIdx)}>
             Add Note
           </Button>
         </Card.Header>
-        <Accordion.Collapse eventKey={`${topicIndex}`}>
+        <Accordion.Collapse eventKey={`${topicIdx}`}>
           <Card.Body>
-            {_.map(topic.notes, (note, noteIndex) => (
-              <Fragment key={noteIndex}>
-                <Row>
+            {_.map(topic.notes, (note, noteIdx) => (
+              <Fragment key={noteIdx}>
+                <Row style={{ margin: "1rem 0" }}>
                   <Col style={{ display: "flex", alignItems: "center" }}>
                     {note.title}
                   </Col>
-                  <Button
-                    variant="dark"
-                    onClick={() => setNoteEditor(topicIndex, noteIndex, true)}
-                  >
-                    Edit Note
-                  </Button>
+                  <Col>
+                    <Button
+                      variant="dark"
+                      onClick={() => setNoteEditor(topicIdx, noteIdx, true)}
+                      style={{
+                        visibility:
+                          topicIdx === -1 && noteIdx === -1 && "hidden",
+                      }}
+                    >
+                      Edit Note
+                    </Button>
+                  </Col>
                   <Col style={{ display: "flex", alignItems: "center" }}>
                     {new Date(note.date).toDateString()}
                   </Col>
-                  <Button style={{ margin: "0 1rem" }} variant="dark">
-                    View Connected Notes
-                  </Button>
-                  <Button variant="dark">Add Connections</Button>
+                  {!connectingNotes &&
+                    (topicIndex === -1 && noteIndex === -1 ? (
+                      <Button style={{ margin: "0 1rem" }} variant="dark">
+                        View Connected Notes
+                      </Button>
+                    ) : topicIndex === topicIdx && noteIndex === noteIdx ? (
+                      <Button>Done Viewing</Button>
+                    ) : null)}
+                  <Col>
+                    {!showConnectedNotes &&
+                      (topicIndex === -1 && noteIndex === -1 ? (
+                        <Button
+                          variant="dark"
+                          onClick={() => this.connectNote(topicIdx, noteIdx)}
+                        >
+                          Add Connections
+                        </Button>
+                      ) : topicIndex === topicIdx && noteIndex === noteIdx ? (
+                        <Button
+                          variant="light"
+                          style={{
+                            borderColor: "black",
+                          }}
+                          onClick={() => this.finalizeNote(note.id)}
+                        >
+                          Finalize
+                        </Button>
+                      ) : _.includes(connectedNotes, note.id) ? (
+                        <Button onClick={() => this.toggleNote(note.id)}>
+                          Disconnect
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="dark"
+                          onClick={() => this.toggleNote(note.id)}
+                        >
+                          Connect
+                        </Button>
+                      ))}
+                  </Col>
                 </Row>
               </Fragment>
             ))}

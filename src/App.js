@@ -21,6 +21,11 @@ class App extends React.Component {
     };
   }
 
+  selectNote = (
+    topicIndex,
+    noteIndex //selecting note for connections
+  ) => this.setState({ selectedNote: { topicIndex, noteIndex } });
+
   saveNotes = (newNotes) => {
     this.setState({ notes: newNotes });
     Notes.setNotes(newNotes);
@@ -45,6 +50,36 @@ class App extends React.Component {
       }
     });
     this.saveNotes(newNotes);
+  };
+
+  connectNotes = (id, connectedNotes, topicIndex) => {
+    const { notes } = this.state;
+    const newNotes = _.map(notes, (topic, topicIdx) => {
+      if (topicIdx !== topicIndex) {
+        return { ...topic };
+      } else {
+        return {
+          topic: topic.topic,
+          notes: _.map(topic.notes, (note) => {
+            if (note.id === id) {
+              return { ...note, connectedNotes: connectedNotes };
+            } else if (_.includes(connectedNotes, note.id)) {
+              return {
+                ...note,
+                connectedNotes: _.union(note.connectedNotes, [id]),
+              };
+            } else {
+              return {
+                ...note,
+                connectedNotes: _.without(note.connectedNotes, id),
+              };
+            }
+          }),
+        };
+      }
+    });
+    this.saveNotes(newNotes);
+    this.selectNote(-1, -1);
   };
 
   setNoteEditor = (topicIndex, noteIndex, showNoteEditor) => {
@@ -131,6 +166,8 @@ class App extends React.Component {
             setNoteEditor={this.setNoteEditor}
             topicIndex={topicIndex}
             noteIndex={noteIndex}
+            selectNote={this.selectNote}
+            connectNotes={this.connectNotes}
           />
         )}
       </>
