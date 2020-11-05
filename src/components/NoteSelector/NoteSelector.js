@@ -25,8 +25,13 @@ export default class NoteSelector extends React.Component {
     const { topicIndex, noteIndex, notes } = this.props;
     if (topicIndex !== -1 && noteIndex !== -1) {
       const newNote = notes[topicIndex].notes[noteIndex];
+      console.log(this.state.connectedNotes);
 
-      if (newNote.connectedNotes !== prevState.connectedNotes) {
+      if (
+        newNote.connectedNotes !== prevState.connectedNotes &&
+        prevProps.topicIndex !== topicIndex &&
+        prevProps.noteIndex !== noteIndex
+      ) {
         this.setState({ connectedNotes: newNote.connectedNotes });
       }
     }
@@ -88,7 +93,16 @@ export default class NoteSelector extends React.Component {
           <Card.Body>
             {_.map(topic.notes, (note, noteIdx) => (
               <Fragment key={noteIdx}>
-                <Row style={{ margin: "1rem 0" }}>
+                <Row
+                  style={{
+                    margin: "1rem 0",
+                    border:
+                      (showConnectedNotes || connectingNotes) &&
+                      ((topicIndex === topicIdx && noteIndex === noteIdx) ||
+                        _.includes(connectedNotes, note.id)) &&
+                      "1px black solid",
+                  }}
+                >
                   <Col style={{ display: "flex", alignItems: "center" }}>
                     {note.title}
                   </Col>
