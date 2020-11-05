@@ -32,6 +32,18 @@ export default class NoteSelector extends React.Component {
     }
   }
 
+  showConnectedNotes = (topicIndex, noteIndex) => {
+    const { selectNote } = this.props;
+    this.setState({ showConnectedNotes: true });
+    selectNote(topicIndex, noteIndex);
+  };
+
+  hideConnectedNotes = () => {
+    const { selectNote } = this.props;
+    this.setState({ showConnectedNotes: false });
+    selectNote(-1, -1);
+  };
+
   connectNote = (topicIndex, noteIndex) => {
     const { selectNote } = this.props;
     selectNote(topicIndex, noteIndex);
@@ -86,7 +98,10 @@ export default class NoteSelector extends React.Component {
                       onClick={() => setNoteEditor(topicIdx, noteIdx, true)}
                       style={{
                         visibility:
-                          topicIdx === -1 && noteIdx === -1 && "hidden",
+                          topicIndex !== -1 &&
+                          noteIndex !== -1 &&
+                          connectingNotes &&
+                          "hidden",
                       }}
                     >
                       Edit Note
@@ -97,11 +112,19 @@ export default class NoteSelector extends React.Component {
                   </Col>
                   {!connectingNotes &&
                     (topicIndex === -1 && noteIndex === -1 ? (
-                      <Button style={{ margin: "0 1rem" }} variant="dark">
+                      <Button
+                        style={{ margin: "0 1rem" }}
+                        variant="dark"
+                        onClick={() =>
+                          this.showConnectedNotes(topicIdx, noteIdx)
+                        }
+                      >
                         View Connected Notes
                       </Button>
                     ) : topicIndex === topicIdx && noteIndex === noteIdx ? (
-                      <Button>Done Viewing</Button>
+                      <Button onClick={this.hideConnectedNotes}>
+                        Done Viewing
+                      </Button>
                     ) : null)}
                   <Col>
                     {!showConnectedNotes &&
