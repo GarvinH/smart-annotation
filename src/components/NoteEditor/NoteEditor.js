@@ -119,6 +119,16 @@ export default class NoteEditor extends React.Component {
                     />
                   </InputGroup>
                 </Card.Title>
+                <InputGroup>
+                  <FormControl
+                    style={{ height: 200 }}
+                    as="textarea"
+                    aria-label="Type your note here"
+                    placeholder="Type your note here"
+                    value={noteInfo}
+                    onChange={this.infoChange}
+                  />
+                </InputGroup>
                 <TagInput tags={noteKeywords} addKeyword={this.addKeyword} />
               </Card.Body>
             </Card>

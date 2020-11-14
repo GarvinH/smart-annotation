@@ -28,7 +28,7 @@ export class TagInput extends React.Component {
       <div className={classes["input-tag"]}>
         <ul className={classes["input-tag__tags"]}>
           {_.map(tags, (tag, i) => (
-            <li key={tag}>
+            <li key={tag} style={{ marginRight: "0.5rem" }}>
               <h1>
                 <Badge variant="dark">
                   <Button
@@ -47,8 +47,8 @@ export class TagInput extends React.Component {
             <input
               style={{ height: "100%", fontSize: "2rem", paddingLeft: "1rem " }}
               type="text"
-              aria-label="Type your note here. Press enter to save the tag."
-              placeholder="Type your note here"
+              aria-label="Add Keywords here. Press enter to save the tag."
+              placeholder="Add Keywords..."
               onChange={(e) => this.setState({ inputText: e.target.value })}
               onKeyDown={this.inputKeyDown}
               value={inputText}
