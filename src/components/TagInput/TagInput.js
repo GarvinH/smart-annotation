@@ -22,7 +22,7 @@ export class TagInput extends React.Component {
 
   render() {
     const { inputText } = this.state;
-    const { tags } = this.props;
+    const { tags, deleteKeyword } = this.props;
 
     return (
       <div className={classes["input-tag"]}>
@@ -35,6 +35,7 @@ export class TagInput extends React.Component {
                     variant="light"
                     size="sm"
                     style={{ marginRight: "0.5rem" }}
+                    onClick={() => deleteKeyword(tag)}
                   >
                     X
                   </Button>
