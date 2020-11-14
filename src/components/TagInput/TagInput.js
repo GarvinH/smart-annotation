@@ -1,14 +1,27 @@
 import React from "react";
-import {
-  Badge,
-  Button,
-} from "react-bootstrap";
+import { Badge, Button } from "react-bootstrap";
 import _ from "lodash";
 
 import classes from "./TagInput.module.css";
 
 export class TagInput extends React.Component {
+  state = {
+    inputText: "",
+  };
+
+  inputKeyDown = async (e) => {
+    const { addKeyword } = this.props;
+    const tagText = e.target.value;
+    if (e.key === "Enter") {
+      if (tagText) {
+        await addKeyword(tagText);
+      }
+      this.setState({ inputText: "" });
+    }
+  };
+
   render() {
+    const { inputText } = this.state;
     const { tags } = this.props;
 
     return (
@@ -18,26 +31,27 @@ export class TagInput extends React.Component {
             <li key={tag}>
               <h1>
                 <Badge variant="dark">
-                  {tag}
                   <Button
                     variant="light"
                     size="sm"
-                    style={{ marginLeft: "0.5rem" }}
+                    style={{ marginRight: "0.5rem" }}
                   >
                     X
                   </Button>
+                  {tag}
                 </Badge>
               </h1>
             </li>
           ))}
           <li className={classes["input-tag__tags__input"]}>
             <input
-              style={{ height: "100%", fontSize: "2rem" }}
-              type="textarea"
+              style={{ height: "100%", fontSize: "2rem", paddingLeft: "1rem " }}
+              type="text"
+              aria-label="Type your note here. Press enter to save the tag."
+              placeholder="Type your note here"
+              onChange={(e) => this.setState({ inputText: e.target.value })}
               onKeyDown={this.inputKeyDown}
-              ref={(c) => {
-                this.tagInput = c;
-              }}
+              value={inputText}
             />
           </li>
         </ul>

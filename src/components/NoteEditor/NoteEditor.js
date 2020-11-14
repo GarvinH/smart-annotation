@@ -2,6 +2,7 @@ import React from "react";
 import { InputGroup, FormControl, Card, Button } from "react-bootstrap";
 import { MediaHandler } from "../MediaHandler/MediaHandler.js";
 import { TagInput } from "../TagInput/TagInput.js";
+import _ from "lodash";
 
 export default class NoteEditor extends React.Component {
   state = {
@@ -48,8 +49,17 @@ export default class NoteEditor extends React.Component {
 
   infoChange = (event) => this.setState({ noteInfo: event.target.value });
 
-  keywordsChange = (event) =>
-    this.setState({ noteKeywords: event.target.value });
+  addKeyword = async (tagText) => {
+    const { noteKeywords } = this.state;
+    if (
+      !_.some(
+        noteKeywords,
+        (keyword) => _.toLower(keyword) === _.toLower(tagText)
+      )
+    ) {
+      this.setState({ noteKeywords: [...noteKeywords, tagText] });
+    }
+  };
 
   mediaChanged = (location) => this.setState({ noteMedia: location });
 
@@ -109,17 +119,7 @@ export default class NoteEditor extends React.Component {
                     />
                   </InputGroup>
                 </Card.Title>
-                <InputGroup>
-                  <FormControl
-                    style={{ height: 200 }}
-                    as="textarea"
-                    aria-label="Type your note here"
-                    placeholder="Type your note here"
-                    value={noteInfo}
-                    onChange={this.infoChange}
-                  />
-                </InputGroup>
-                <TagInput tags={noteKeywords} />
+                <TagInput tags={noteKeywords} addKeyword={this.addKeyword} />
               </Card.Body>
             </Card>
           </div>
