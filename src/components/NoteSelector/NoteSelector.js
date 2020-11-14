@@ -19,6 +19,7 @@ export default class NoteSelector extends React.Component {
     connectingNotes: false,
     showConnectedNotes: false, //for viewing connected notes ONLY (ie no changing if notes are connecting)
     connectedNotes: [],
+    keywordFilter: "",
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -68,15 +69,34 @@ export default class NoteSelector extends React.Component {
     }));
 
   render() {
-    const { notes, addNote, setNoteEditor, topicIndex, noteIndex } = this.props;
+    const {
+      notes,
+      addNote,
+      setNoteEditor,
+      topicIndex,
+      noteIndex,
+      addTopic,
+    } = this.props;
     const {
       topicNameInput,
       connectedNotes,
       connectingNotes,
       showConnectedNotes,
+      keywordFilter,
     } = this.state;
 
-    const accordion_children = _.map(notes, (topic, topicIdx) => (
+    const filteredNotes = keywordFilter
+      ? _.map(notes, (topic) => ({
+          ...topic,
+          notes: _.filter(topic.notes, (note) =>
+            _.some(note.keywords, (keyword) =>
+              _.includes(_.toLower(keyword), _.toLower(keywordFilter))
+            )
+          ),
+        }))
+      : notes;
+
+    const accordion_children = _.map(filteredNotes, (topic, topicIdx) => (
       <Card key={topicIdx}>
         <Card.Header
           style={{ display: "flex", justifyContent: "space-between" }}
@@ -184,6 +204,20 @@ export default class NoteSelector extends React.Component {
       <Fragment>
         <h1 style={{ textAlign: "center" }}>Topic/Note Selector</h1>
         <br />
+        <Form>
+          <Form.Row>
+            <Col>
+              <FormControl
+                placeholder="Filter by keyword"
+                value={keywordFilter}
+                onChange={(e) =>
+                  this.setState({ keywordFilter: e.target.value })
+                }
+              />
+            </Col>
+          </Form.Row>
+        </Form>
+        <br />
         <Accordion>{accordion_children}</Accordion>
         <br />
         <Form className="mr-auto">
@@ -202,7 +236,7 @@ export default class NoteSelector extends React.Component {
               <Button
                 variant="dark"
                 style={{ marginLeft: "1rem" }}
-                onClick={this.addTopic}
+                onClick={() => addTopic(topicNameInput)}
               >
                 Create new topic
               </Button>
