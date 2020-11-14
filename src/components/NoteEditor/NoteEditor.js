@@ -1,6 +1,7 @@
 import React from "react";
 import { InputGroup, FormControl, Card, Button } from "react-bootstrap";
 import { MediaHandler } from "../MediaHandler/MediaHandler.js";
+import { TagInput } from "../TagInput/TagInput.js";
 
 export default class NoteEditor extends React.Component {
   state = {
@@ -118,15 +119,7 @@ export default class NoteEditor extends React.Component {
                     onChange={this.infoChange}
                   />
                 </InputGroup>
-                <InputGroup>
-                  <FormControl
-                    as="textarea"
-                    aria-label="Type your keywords here"
-                    placeholder="Add keywords..."
-                    value={noteKeywords}
-                    onChange={this.keywordsChange}
-                  />
-                </InputGroup>
+                <TagInput tags={noteKeywords} />
               </Card.Body>
             </Card>
           </div>
@@ -159,6 +152,6 @@ export default class NoteEditor extends React.Component {
       topicIndex,
       noteIndex
     );
-    setShowNoteSelector(true)
+    setShowNoteSelector(true);
   }
 }
