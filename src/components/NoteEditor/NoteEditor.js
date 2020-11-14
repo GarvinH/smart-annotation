@@ -63,6 +63,12 @@ export default class NoteEditor extends React.Component {
 
   mediaChanged = (location) => this.setState({ noteMedia: location });
 
+  deleteKeyword = (tagText) => {
+    const { noteKeywords } = this.state;
+    const newKeywordList = _.without(noteKeywords, tagText);
+    this.setState({ noteKeywords: newKeywordList });
+  };
+
   render() {
     const {
       id,
@@ -129,7 +135,7 @@ export default class NoteEditor extends React.Component {
                     onChange={this.infoChange}
                   />
                 </InputGroup>
-                <TagInput tags={noteKeywords} addKeyword={this.addKeyword} />
+                <TagInput tags={noteKeywords} addKeyword={this.addKeyword} deleteKeyword={this.deleteKeyword}/>
               </Card.Body>
             </Card>
           </div>
