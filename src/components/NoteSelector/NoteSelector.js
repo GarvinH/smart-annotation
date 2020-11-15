@@ -7,8 +7,26 @@ import {
   Row,
   Form,
   FormControl,
+  Dropdown,
 } from "react-bootstrap";
 import _ from "lodash";
+
+const sortDateOldNew = (notes) =>
+  _.map(notes, (topic) => ({
+    ...topic,
+    notes: _.sortBy(topic.notes, (note) => note.id),
+  }));
+
+const sorting = [
+  {
+    text: "Sort by Date (Old to New)",
+    func: sortDateOldNew,
+  },
+  {
+    text: "Sort by Date (New to Old)",
+    func: (notes) => _.reverse(sortDateOldNew(notes)),
+  },
+];
 
 const toggle_list = (arr, val) =>
   _.includes(arr, val) ? _.without(arr, val) : _.concat(arr, val);
@@ -20,6 +38,7 @@ export default class NoteSelector extends React.Component {
     showConnectedNotes: false, //for viewing connected notes ONLY (ie no changing if notes are connecting)
     connectedNotes: [],
     keywordFilter: "",
+    sortOption: 0, //refer to variable above "sorting" to find corresponding sorting/index
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,6 +102,7 @@ export default class NoteSelector extends React.Component {
       connectingNotes,
       showConnectedNotes,
       keywordFilter,
+      sortOption,
     } = this.state;
 
     const filteredNotes = keywordFilter
@@ -214,6 +234,24 @@ export default class NoteSelector extends React.Component {
                   this.setState({ keywordFilter: e.target.value })
                 }
               />
+            </Col>
+            <Col>
+              <Dropdown>
+                <Dropdown.Toggle variant="dark">
+                  Change sort order
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {_.map(sorting, (option, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      active={index === sortOption}
+                      onClick={() => this.setState({ sortOption: index })}
+                    >
+                      {option.text}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
             </Col>
           </Form.Row>
         </Form>
