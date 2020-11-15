@@ -40,25 +40,25 @@ export default class NoteSelector extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { topicIndex, noteIndex, notes } = this.props;
-    if (topicIndex !== -1 && noteIndex !== -1) {
-      const newNote = notes[topicIndex].notes[noteIndex];
+    const { topicIndex, note} = this.props;
+    if (topicIndex !== -1 && !_.isNil(note)) {
+      const newNote = note;
       console.log(this.state.connectedNotes);
 
       if (
         newNote.connectedNotes !== prevState.connectedNotes &&
         prevProps.topicIndex !== topicIndex &&
-        prevProps.noteIndex !== noteIndex
+        prevProps.note.id !== note.id
       ) {
         this.setState({ connectedNotes: newNote.connectedNotes });
       }
     }
   }
 
-  showConnectedNotes = (topicIndex, noteIndex) => {
+  showConnectedNotes = (topicIndex, noteId) => {
     const { selectNote } = this.props;
     this.setState({ showConnectedNotes: true });
-    selectNote(topicIndex, noteIndex);
+    selectNote(topicIndex, noteId);
   };
 
   hideConnectedNotes = () => {
@@ -67,9 +67,9 @@ export default class NoteSelector extends React.Component {
     selectNote(-1, -1);
   };
 
-  connectNote = (topicIndex, noteIndex) => {
+  connectNote = (topicIndex, noteId) => {
     const { selectNote } = this.props;
-    selectNote(topicIndex, noteIndex);
+    selectNote(topicIndex, noteId);
     this.setState({ connectingNotes: true });
   };
 
@@ -91,7 +91,7 @@ export default class NoteSelector extends React.Component {
       addNote,
       setNoteEditor,
       topicIndex,
-      noteIndex,
+      note: noteObject,
       addTopic,
     } = this.props;
     const {
@@ -102,6 +102,7 @@ export default class NoteSelector extends React.Component {
       keywordFilter,
       sortOption,
     } = this.state;
+    console.log(noteObject)
 
     const filteredNotes = keywordFilter
       ? _.map(notes, (topic) => ({
@@ -141,7 +142,7 @@ export default class NoteSelector extends React.Component {
                     margin: "1rem 0",
                     border:
                       (showConnectedNotes || connectingNotes) &&
-                      ((topicIndex === topicIdx && noteIndex === noteIdx) ||
+                      ((topicIndex === topicIdx && note.id === noteObject.id) ||
                         _.includes(connectedNotes, note.id)) &&
                       "1px black solid",
                   }}
@@ -152,11 +153,11 @@ export default class NoteSelector extends React.Component {
                   <Col>
                     <Button
                       variant="dark"
-                      onClick={() => setNoteEditor(topicIdx, noteIdx, true)}
+                      onClick={() => setNoteEditor(topicIdx, note.id, true)}
                       style={{
                         visibility:
                           topicIndex !== -1 &&
-                          noteIndex !== -1 &&
+                          noteObject.id !== -1 &&
                           connectingNotes &&
                           "hidden",
                       }}
@@ -168,31 +169,31 @@ export default class NoteSelector extends React.Component {
                     {new Date(note.date).toDateString()}
                   </Col>
                   {!connectingNotes &&
-                    (topicIndex === -1 && noteIndex === -1 ? (
+                    (topicIndex === -1 && noteObject.id === -1 ? (
                       <Button
                         style={{ margin: "0 1rem" }}
                         variant="dark"
                         onClick={() =>
-                          this.showConnectedNotes(topicIdx, noteIdx)
+                          this.showConnectedNotes(topicIdx, note.id)
                         }
                       >
                         View Connected Notes
                       </Button>
-                    ) : topicIndex === topicIdx && noteIndex === noteIdx ? (
+                    ) : topicIndex === topicIdx && note.id === noteObject.id ? (
                       <Button onClick={this.hideConnectedNotes}>
                         Done Viewing
                       </Button>
                     ) : null)}
                   <Col>
                     {!showConnectedNotes &&
-                      (topicIndex === -1 && noteIndex === -1 ? (
+                      (topicIndex === -1 && noteObject.id === -1 ? (
                         <Button
                           variant="dark"
-                          onClick={() => this.connectNote(topicIdx, noteIdx)}
+                          onClick={() => this.connectNote(topicIdx, note.id)}
                         >
                           Add Connections
                         </Button>
-                      ) : topicIndex === topicIdx && noteIndex === noteIdx ? (
+                      ) : topicIndex === topicIdx && note.id === noteObject.id ? (
                         <Button
                           variant="light"
                           style={{

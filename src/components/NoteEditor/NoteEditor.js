@@ -13,7 +13,6 @@ export default class NoteEditor extends React.Component {
     noteMedia: "",
     noteDate: null,
     topicIndex: -1,
-    noteIndex: -1,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -28,7 +27,6 @@ export default class NoteEditor extends React.Component {
         noteMedia: note.media,
         noteDate: note.date,
         topicIndex: nextProps.topicIndex,
-        noteIndex: nextProps.noteIndex,
       };
     }
 
@@ -154,7 +152,6 @@ export default class NoteEditor extends React.Component {
       noteMedia,
       noteKeywords,
       topicIndex,
-      noteIndex,
     } = this.state;
     updateNotes(
       {
@@ -166,7 +163,7 @@ export default class NoteEditor extends React.Component {
         keywords: noteKeywords,
       },
       topicIndex,
-      noteIndex
+      id
     );
     setShowNoteSelector(true);
   }
