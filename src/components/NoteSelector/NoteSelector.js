@@ -11,11 +11,7 @@ import {
 } from "react-bootstrap";
 import _ from "lodash";
 
-const sortDateOldNew = (notes) =>
-  _.map(notes, (topic) => ({
-    ...topic,
-    notes: _.sortBy(topic.notes, (note) => note.id),
-  }));
+const sortDateOldNew = (notes) => _.sortBy(notes, (note) => note.id); //actual notes within a topic
 
 const sorting = [
   {
@@ -24,7 +20,9 @@ const sorting = [
   },
   {
     text: "Sort by Date (New to Old)",
-    func: (notes) => _.reverse(sortDateOldNew(notes)),
+    func: (notes) => {
+      return _.reverse(sortDateOldNew(notes));
+    },
   },
 ];
 
@@ -116,7 +114,12 @@ export default class NoteSelector extends React.Component {
         }))
       : notes;
 
-    const accordion_children = _.map(filteredNotes, (topic, topicIdx) => (
+    const sortedNotes = _.map(filteredNotes, (topic) => ({
+      ...topic,
+      notes: sorting[sortOption].func(topic.notes),
+    }));
+
+    const accordion_children = _.map(sortedNotes, (topic, topicIdx) => (
       <Card key={topicIdx}>
         <Card.Header
           style={{ display: "flex", justifyContent: "space-between" }}
