@@ -16,22 +16,22 @@ class App extends React.Component {
       showNoteEditor: false,
       selectedNote: {
         topicIndex: -1,
-        noteIndex: -1,
+        noteId: -1,
       },
     };
   }
 
   selectNote = (
     topicIndex,
-    noteIndex //selecting note for connections
-  ) => this.setState({ selectedNote: { topicIndex, noteIndex } });
+    noteId //selecting note for connections
+  ) => this.setState({ selectedNote: { topicIndex, noteId } });
 
   saveNotes = (newNotes) => {
     this.setState({ notes: newNotes });
     Notes.setNotes(newNotes);
   };
 
-  updateNotes = (updatedNote, topicIndex, noteIndex) => {
+  updateNotes = (updatedNote, topicIndex, noteId) => {
     const { notes } = this.state;
     const newNotes = _.map(notes, (topic, topicIdx) => {
       if (topicIdx !== topicIndex) {
@@ -39,8 +39,8 @@ class App extends React.Component {
       } else {
         return {
           topic: topic.topic,
-          notes: _.map(topic.notes, (note, noteIdx) => {
-            if (noteIdx !== noteIndex) {
+          notes: _.map(topic.notes, (note) => {
+            if (noteId !== note.id) {
               return { ...note };
             } else {
               return updatedNote;
@@ -82,9 +82,9 @@ class App extends React.Component {
     this.selectNote(-1, -1);
   };
 
-  setNoteEditor = (topicIndex, noteIndex, showNoteEditor) => {
+  setNoteEditor = (topicIndex, noteId, showNoteEditor) => {
     this.setState({
-      selectedNote: { topicIndex: topicIndex, noteIndex: noteIndex },
+      selectedNote: { topicIndex: topicIndex, noteId: noteId },
       showNoteSelector: false,
       showNoteEditor: showNoteEditor,
     });
@@ -136,7 +136,13 @@ class App extends React.Component {
       selectedNote,
       showNoteEditor,
     } = this.state;
-    const { topicIndex, noteIndex } = selectedNote;
+    const { topicIndex, noteId } = selectedNote;
+
+    const selectedNoteObject = topicIndex >= 0 ? _.find(
+      notes[topicIndex].notes,
+      (note) => note.id === noteId
+    ): {id: -1};
+
     return (
       <>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -151,10 +157,9 @@ class App extends React.Component {
         </div>
         {showNoteEditor && (
           <NoteEditor
-            note={notes[topicIndex].notes[noteIndex]}
+            note={selectedNoteObject}
             updateNotes={this.updateNotes}
             topicIndex={topicIndex}
-            noteIndex={noteIndex}
             setShowNoteSelector={this.setShowNoteSelector}
           />
         )}
@@ -165,7 +170,7 @@ class App extends React.Component {
             addTopic={this.addTopic}
             setNoteEditor={this.setNoteEditor}
             topicIndex={topicIndex}
-            noteIndex={noteIndex}
+            note={selectedNoteObject}
             selectNote={this.selectNote}
             connectNotes={this.connectNotes}
           />
