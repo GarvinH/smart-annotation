@@ -131,13 +131,13 @@ class App extends React.Component {
 
   deleteNote = (selectedNote) => {
     const { notes } = this.state;
-    const newNotes = notes.length > 0 && _.map(notes, (topic, topicIdx) => {
+    const newNotes = _.map(notes, (topic, topicIdx) => {
       if (topicIdx !== selectedNote.topicIndex) {
         return { ...topic };
       }
       else {
-        const afterDeletion = _.filter(topic.notes, (id) => {
-          return selectedNote.noteId !== id.id;
+        const afterDeletion = _.filter(topic.notes, (note) => {
+          return selectedNote.noteId !== note.id;
         })
         return {
           topic: topic.topic,
@@ -145,7 +145,7 @@ class App extends React.Component {
         };
       }
     });
-    this.setState({ notes: newNotes});
+    this.saveNotes(newNotes);
     this.setNoteEditor(-1, -1, false);
   }
 
