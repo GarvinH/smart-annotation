@@ -136,8 +136,8 @@ class App extends React.Component {
         return { ...topic };
       }
       else {
-        const afterDeletion = _.filter(topic.notes, (id) => {
-          return selectedNote.noteId !== id.id;
+        const afterDeletion = _.filter(topic.notes, (note) => {
+          return selectedNote.noteId !== note.id;
         })
         return {
           topic: topic.topic,
@@ -145,7 +145,7 @@ class App extends React.Component {
         };
       }
     });
-    this.setState({ notes: newNotes});
+    this.saveNotes(newNotes);
     this.setNoteEditor(-1, -1, false);
   }
 
