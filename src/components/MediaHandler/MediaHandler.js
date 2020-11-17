@@ -8,6 +8,7 @@ export class MediaHandler extends React.Component {
   state = {
     mime: null,
     error: false,
+    buttonText: "Add Media",
   };
 
   obtainMedia = async () => {
@@ -16,6 +17,7 @@ export class MediaHandler extends React.Component {
       const location = await FileInterface.saveMedia();
       mediaChanged(location);
     } catch {}
+    this.setState({buttonText: "Change Media"});
   };
 
   readMediaType = async (mediaLocation) => {
@@ -38,6 +40,7 @@ export class MediaHandler extends React.Component {
 
   render() {
     const { mediaLocation } = this.props;
+    const {mime, error, buttonText} = this.state;
 
     if (_.isNil(mediaLocation)) {
       return (
@@ -51,11 +54,10 @@ export class MediaHandler extends React.Component {
             flexDirection: "column",
           }}
         >
-          <button onClick={this.obtainMedia}>Add Media</button>
+          <button onClick={this.obtainMedia}>{buttonText}</button>
         </div>
       );
     } else {
-      const { mime, error } = this.state;
       const fileLocation = `file://${mediaLocation}`;
 
       try {
@@ -74,7 +76,9 @@ export class MediaHandler extends React.Component {
               }}
             >
               <h4>Failed to read file, try again</h4>
-              <button onClick={this.obtainMedia}>Add Media</button>
+              <button onClick={() => {
+                this.obtainMedia();
+                this.changeMediaButton();}}>Add Media</button>
             </div>
           );
         } else if (_.includes(mime, "image")) {
@@ -140,7 +144,7 @@ export class MediaHandler extends React.Component {
             }}
           >
             <h4>Failed to read file, try again</h4>
-            <button onClick={this.obtainMedia}>Add Media</button>
+            <button onClick={this.obtainMedia}>{buttonText}</button>
           </div>
         );
       }

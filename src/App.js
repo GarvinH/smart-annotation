@@ -131,7 +131,7 @@ class App extends React.Component {
 
   deleteNote = (selectedNote) => {
     const { notes } = this.state;
-    const newNotes = notes.length > 0 && _.map(notes, (topic, topicIdx) => {
+    const newNotes = _.map(notes, (topic, topicIdx) => {
       if (topicIdx !== selectedNote.topicIndex) {
         return { ...topic };
       }
