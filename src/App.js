@@ -129,6 +129,26 @@ class App extends React.Component {
     this.setState({ notes: [...notes, newTopic] });
   };
 
+  deleteNote = (selectedNote) => {
+    const { notes } = this.state;
+    const newNotes = _.map(notes, (topic, topicIdx) => {
+      if (topicIdx !== selectedNote.topicIndex) {
+        return { ...topic };
+      }
+      else {
+        const afterDeletion = _.filter(topic.notes, (note) => {
+          return selectedNote.noteId !== note.id;
+        })
+        return {
+          topic: topic.topic,
+          notes: afterDeletion,
+        };
+      }
+    });
+    this.saveNotes(newNotes);
+    this.setNoteEditor(-1, -1, false);
+  }
+
   render() {
     const {
       notes,
@@ -154,7 +174,16 @@ class App extends React.Component {
               Save and Close
             </Button>
           )}
+          {showNoteEditor && (
+          <Button
+            variant="dark"
+            onClick={() => this.deleteNote(selectedNote)}
+          >
+            Delete Note
+          </Button>
+        )}
         </div>
+        
         {showNoteEditor && (
           <NoteEditor
             note={selectedNoteObject}
