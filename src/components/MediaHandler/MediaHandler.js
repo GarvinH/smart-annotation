@@ -59,6 +59,41 @@ export class MediaHandler extends React.Component {
     } else {
       const fileLocation = `file://${mediaLocation}`;
 
+      const content = (() => {
+        if(_.isNil(mime)){
+          return null;
+        }
+        else if(error){
+          return <h4>Failed to read file, try again</h4>
+        }
+        else if(_.includes(mime, "image")){
+          <img src={fileLocation} alt="note" />
+        }
+        else if(_.includes(mime, "audio")){
+          <audio controls>
+            <source src={fileLocation} type={mime} />
+          </audio>
+        }
+        else if(_.includes(mime, "video")){
+          <video controls>
+            <source src={fileLocation} type={mime} />
+          </video>
+        }
+      });
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        {content}
+        <button onClick={this.obtainMedia}>{buttonText}</button>
+      </div>
+      
       try {
         if (_.isNil(mime)) {
           return null;
