@@ -17,7 +17,6 @@ export class MediaHandler extends React.Component {
       const location = await FileInterface.saveMedia();
       mediaChanged(location);
     } catch {}
-    this.setState({buttonText: "Change Media"});
   };
 
   readMediaType = async (mediaLocation) => {
