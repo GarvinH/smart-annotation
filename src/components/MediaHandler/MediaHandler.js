@@ -58,114 +58,42 @@ export class MediaHandler extends React.Component {
       );
     } else {
       const fileLocation = `file://${mediaLocation}`;
-
+      
       const content = (() => {
         if(_.isNil(mime)){
           return null;
         }
         else if(error){
-          return <h4>Failed to read file, try again</h4>
+          return (<h4>Failed to read file, try again</h4>);
         }
         else if(_.includes(mime, "image")){
-          <img src={fileLocation} alt="note" />
+          return (<img src={fileLocation} alt="note" />);
         }
         else if(_.includes(mime, "audio")){
-          <audio controls>
-            <source src={fileLocation} type={mime} />
-          </audio>
+          return (<audio controls><source src={fileLocation} type={mime} /></audio>);
         }
         else if(_.includes(mime, "video")){
-          <video controls>
-            <source src={fileLocation} type={mime} />
-          </video>
+          return (<video controls><source src={fileLocation} type={mime} /></video>);
         }
-      });
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        {content}
-        <button onClick={this.obtainMedia}>{buttonText}</button>
-      </div>
-      
+      })();
+
       try {
-        if (_.isNil(mime)) {
-          return null;
-        } else if (error) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <h4>Failed to read file, try again</h4>
-              <button onClick={this.obtainMedia}>{buttonText}</button>
-            </div>
-          );
-        } else if (_.includes(mime, "image")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <img src={fileLocation} alt="note" />
-              <button onClick={this.obtainMedia}>{buttonText}</button>
-            </div>
-          );
-        } else if (_.includes(mime, "audio")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <audio controls>
-                <source src={fileLocation} type={mime} />
-              </audio>
-              <button onClick={this.obtainMedia}>{buttonText}</button>
-            </div>
-          );
-        } else if (_.includes(mime, "video")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <video controls>
-                <source src={fileLocation} type={mime} />
-              </video>
-              <button onClick={this.obtainMedia}>{buttonText}</button>
-            </div>
-          );
-        }
+        return(
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {content}
+            <button onClick={this.obtainMedia}>{buttonText}</button>
+          </div>
+        );
+
       } catch {
         return (
           <div
