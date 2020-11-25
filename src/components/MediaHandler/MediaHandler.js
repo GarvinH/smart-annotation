@@ -8,6 +8,7 @@ export class MediaHandler extends React.Component {
   state = {
     mime: null,
     error: false,
+    buttonText: "Add Media",
   };
 
   obtainMedia = async () => {
@@ -30,7 +31,7 @@ export class MediaHandler extends React.Component {
     if (!_.isNil(mediaLocation)) {
       this.readMediaType(mediaLocation)
         .then((mime) => {
-          this.setState({ mime: mime, error: false });
+          this.setState({ mime: mime, error: false, buttonText: "Change Media" });
         })
         .catch(() => this.setState({ mime: "error", error: true }));
     }
@@ -38,6 +39,7 @@ export class MediaHandler extends React.Component {
 
   render() {
     const { mediaLocation } = this.props;
+    const {mime, error, buttonText} = this.state;
 
     if (_.isNil(mediaLocation)) {
       return (
@@ -51,82 +53,47 @@ export class MediaHandler extends React.Component {
             flexDirection: "column",
           }}
         >
-          <button onClick={this.obtainMedia}>Add Media</button>
+          <button onClick={this.obtainMedia}>{buttonText}</button>
         </div>
       );
     } else {
-      const { mime, error } = this.state;
       const fileLocation = `file://${mediaLocation}`;
 
       try {
-        if (_.isNil(mime)) {
-          return null;
-        } else if (error) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <h4>Failed to read file, try again</h4>
-              <button onClick={this.obtainMedia}>Add Media</button>
-            </div>
-          );
-        } else if (_.includes(mime, "image")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <img src={fileLocation} alt="note" />
-            </div>
-          );
-        } else if (_.includes(mime, "audio")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <audio controls>
-                <source src={fileLocation} type={mime} />
-              </audio>
-            </div>
-          );
-        } else if (_.includes(mime, "video")) {
-          return (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <video controls>
-                <source src={fileLocation} type={mime} />
-              </video>
-            </div>
-          );
-        }
+        const content = (() => {
+          if(_.isNil(mime)){
+            return null;
+          }
+          else if(error){
+            return (<h4>Failed to read file, try again</h4>);
+          }
+          else if(_.includes(mime, "image")){
+            return (<img src={fileLocation} alt="note" />);
+          }
+          else if(_.includes(mime, "audio")){
+            return (<audio controls><source src={fileLocation} type={mime} /></audio>);
+          }
+          else if(_.includes(mime, "video")){
+            return (<video controls><source src={fileLocation} type={mime} /></video>);
+          }
+        })();
+        
+        return(
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {content}
+            <button onClick={this.obtainMedia}>{buttonText}</button>
+          </div>
+        );
+
       } catch {
         return (
           <div
@@ -140,7 +107,7 @@ export class MediaHandler extends React.Component {
             }}
           >
             <h4>Failed to read file, try again</h4>
-            <button onClick={this.obtainMedia}>Add Media</button>
+            <button onClick={this.obtainMedia}>{buttonText}</button>
           </div>
         );
       }
