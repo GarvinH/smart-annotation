@@ -76,6 +76,9 @@ export class MediaHandler extends React.Component {
           else if(_.includes(mime, "video")){
             return (<video style={{maxWidth: "100%", height: "auto"}} controls><source src={fileLocation} type={mime} /></video>);
           }
+          else if(_.includes(mime, "pdf")){
+            return(<embed src={fileLocation} type={mime} style={{width:"100%", height: "500px"}}></embed>);
+          }
         })();
 
         return(
