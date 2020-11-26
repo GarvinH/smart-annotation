@@ -68,16 +68,19 @@ export class MediaHandler extends React.Component {
             return (<h4>Failed to read file, try again</h4>);
           }
           else if(_.includes(mime, "image")){
-            return (<img src={fileLocation} alt="note" />);
+            return (<img src={fileLocation} alt="note" style={{maxWidth: "100%", height: "auto"}}/>);
           }
           else if(_.includes(mime, "audio")){
             return (<audio controls><source src={fileLocation} type={mime} /></audio>);
           }
           else if(_.includes(mime, "video")){
-            return (<video controls><source src={fileLocation} type={mime} /></video>);
+            return (<video style={{maxWidth: "100%", height: "auto"}} controls><source src={fileLocation} type={mime} /></video>);
+          }
+          else if(_.includes(mime, "pdf")){
+            return(<embed src={fileLocation} type={mime} style={{width:"100%", height: "500px"}}></embed>);
           }
         })();
-        
+
         return(
           <div
             style={{
