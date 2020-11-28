@@ -99,7 +99,7 @@ export default class NoteEditor extends React.Component {
 
     return (
       <div style={{ textAlign: "left" }}>
-        <header>
+        <header style={{ marginBottom: "1rem" }}>
           <Button
             style={{ float: "right" }}
             variant="dark"
@@ -125,7 +125,11 @@ export default class NoteEditor extends React.Component {
             <Form.Row>
               <Col>
                 <Form.Label
-                  style={{ width: "fit-content", marginLeft: "auto" }}
+                  style={{
+                    width: "fit-content",
+                    marginLeft: "auto",
+                    display: "block",
+                  }}
                 >
                   Set Importance:
                 </Form.Label>
