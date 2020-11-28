@@ -38,6 +38,7 @@ export default class NoteSelector extends React.Component {
     connectedNotes: [],
     keywordFilter: "",
     sortOption: 0, //refer to variable above "sorting" to find corresponding sorting/index
+    importantFirst: true,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -102,6 +103,7 @@ export default class NoteSelector extends React.Component {
       showConnectedNotes,
       keywordFilter,
       sortOption,
+      importantFirst,
     } = this.state;
 
     const filteredNotes = keywordFilter
@@ -120,7 +122,16 @@ export default class NoteSelector extends React.Component {
       notes: sorting[sortOption].func(topic.notes),
     }));
 
-    const accordion_children = _.map(sortedNotes, (topic, topicIdx) => (
+    const orderedNotes = importantFirst
+      ? _.map(sortedNotes, (topic) => ({
+          ...topic,
+          notes: _.orderBy(topic.notes, (note) => note.importanceValue || 0, [
+            "desc",
+          ]),
+        }))
+      : sortedNotes;
+
+    const accordion_children = _.map(orderedNotes, (topic, topicIdx) => (
       <Card key={topicIdx}>
         <Card.Header
           style={{ display: "flex", justifyContent: "space-between" }}
@@ -245,7 +256,7 @@ export default class NoteSelector extends React.Component {
         <br />
         <Form>
           <Form.Row>
-            <Col>
+            <Col sm="6">
               <FormControl
                 placeholder="Filter by keyword"
                 value={keywordFilter}
@@ -271,6 +282,16 @@ export default class NoteSelector extends React.Component {
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
+            </Col>
+            <Col>
+              <Form.Check
+                type="checkbox"
+                label="Important notes first"
+                defaultChecked
+                onChange={(e) =>
+                  this.setState({ importantFirst: !importantFirst })
+                }
+              />
             </Col>
           </Form.Row>
         </Form>
