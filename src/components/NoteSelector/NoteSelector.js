@@ -102,7 +102,6 @@ export default class NoteSelector extends React.Component {
       keywordFilter,
       sortOption,
     } = this.state;
-    console.log(noteObject)
 
     const filteredNotes = keywordFilter
       ? _.map(notes, (topic) => ({

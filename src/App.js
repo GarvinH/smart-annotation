@@ -111,6 +111,7 @@ class App extends React.Component {
               media: null,
               keywords: "",
               connectedNotes: [], //reference by id
+              importanceValue: 0,
             },
           ],
         };
@@ -134,11 +135,10 @@ class App extends React.Component {
     const newNotes = _.map(notes, (topic, topicIdx) => {
       if (topicIdx !== selectedNote.topicIndex) {
         return { ...topic };
-      }
-      else {
+      } else {
         const afterDeletion = _.filter(topic.notes, (note) => {
           return selectedNote.noteId !== note.id;
-        })
+        });
         return {
           topic: topic.topic,
           notes: afterDeletion,
@@ -147,7 +147,7 @@ class App extends React.Component {
     });
     this.saveNotes(newNotes);
     this.setNoteEditor(-1, -1, false);
-  }
+  };
 
   render() {
     const {
@@ -158,10 +158,10 @@ class App extends React.Component {
     } = this.state;
     const { topicIndex, noteId } = selectedNote;
 
-    const selectedNoteObject = topicIndex >= 0 ? _.find(
-      notes[topicIndex].notes,
-      (note) => note.id === noteId
-    ): {id: -1};
+    const selectedNoteObject =
+      topicIndex >= 0
+        ? _.find(notes[topicIndex].notes, (note) => note.id === noteId)
+        : { id: -1 };
 
     return (
       <>
@@ -175,15 +175,15 @@ class App extends React.Component {
             </Button>
           )}
           {showNoteEditor && (
-          <Button
-            variant="dark"
-            onClick={() => this.deleteNote(selectedNote)}
-          >
-            Delete Note
-          </Button>
-        )}
+            <Button
+              variant="dark"
+              onClick={() => this.deleteNote(selectedNote)}
+            >
+              Delete Note
+            </Button>
+          )}
         </div>
-        
+
         {showNoteEditor && (
           <NoteEditor
             note={selectedNoteObject}
