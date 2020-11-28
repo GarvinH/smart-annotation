@@ -10,6 +10,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import _ from "lodash";
+import { importance_markers } from "../ImportanceMarkers/ImportanceMarkers.js";
 
 const sortDateOldNew = (notes) => _.sortBy(notes, (note) => note.id); //actual notes within a topic
 
@@ -40,7 +41,7 @@ export default class NoteSelector extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { topicIndex, note} = this.props;
+    const { topicIndex, note } = this.props;
     if (topicIndex !== -1 && !_.isNil(note)) {
       const newNote = note;
       console.log(this.state.connectedNotes);
@@ -146,6 +147,14 @@ export default class NoteSelector extends React.Component {
                       "1px black solid",
                   }}
                 >
+                  <Col
+                    style={{
+                      visibility: !note.importanceValue && "hidden",
+                    }}
+                  >
+                    {importance_markers[note.importanceValue || 0].html}
+                  </Col>
+
                   <Col style={{ display: "flex", alignItems: "center" }}>
                     {note.title}
                   </Col>
@@ -182,7 +191,13 @@ export default class NoteSelector extends React.Component {
                       <Button onClick={this.hideConnectedNotes}>
                         Done Viewing
                       </Button>
-                    ) : null)}
+                    ) : (
+                      <Button //this button is a placeholder to keep all elements in line with each other and is never really shown
+                        style={{ visibility: connectedNotes && "hidden" }}
+                      >
+                        Done Viewing
+                      </Button>
+                    ))}
                   <Col>
                     {!showConnectedNotes &&
                       (topicIndex === -1 && noteObject.id === -1 ? (
@@ -192,7 +207,8 @@ export default class NoteSelector extends React.Component {
                         >
                           Add Connections
                         </Button>
-                      ) : topicIndex === topicIdx && note.id === noteObject.id ? (
+                      ) : topicIndex === topicIdx &&
+                        note.id === noteObject.id ? (
                         <Button
                           variant="light"
                           style={{
