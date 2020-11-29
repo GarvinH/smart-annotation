@@ -123,7 +123,7 @@ export default class NoteEditor extends React.Component {
           <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
           <Form>
             <Form.Row>
-              <Col>
+              <Col style={{ display: "flex", alignItems: "center" }} >
                 <Form.Label
                   style={{
                     width: "fit-content",

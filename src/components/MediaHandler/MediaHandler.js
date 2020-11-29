@@ -3,6 +3,7 @@ import _ from "lodash";
 import FileInterface from "../../backend/FileSystem/fileio";
 import FileType from "file-type";
 import fs from "fs";
+import { Button } from "react-bootstrap"
 
 export class MediaHandler extends React.Component {
   state = {
@@ -53,7 +54,7 @@ export class MediaHandler extends React.Component {
             flexDirection: "column",
           }}
         >
-          <button onClick={this.obtainMedia}>{buttonText}</button>
+          <Button variant="dark" onClick={this.obtainMedia}>{buttonText}</Button>
         </div>
       );
     } else {

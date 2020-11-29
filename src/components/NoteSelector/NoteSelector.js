@@ -162,6 +162,7 @@ export default class NoteSelector extends React.Component {
                     style={{
                       visibility: !note.importanceValue && "hidden",
                     }}
+                    sm="1"
                   >
                     {importance_markers[note.importanceValue || 0].html}
                   </Col>
