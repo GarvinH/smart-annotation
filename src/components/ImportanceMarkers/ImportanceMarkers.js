@@ -17,14 +17,14 @@ export const importance_markers = [
   },
   {
     value: 1,
-    html: <Emoji symbol="⚠️" label="Moderately important" />,
+    html: <Emoji symbol="❗️" label="Moderately important" />,
   },
   {
     value: 2,
-    html: <Emoji symbol="❗️" label="Important" />,
+    html: <Emoji symbol="❗️❗️" label="Important" />,
   },
   {
     value: 3,
-    html: <Emoji symbol="‼️" label="Urgent" />,
+    html: <Emoji symbol="❗️❗️❗️" label="Urgent" />,
   },
 ];
