@@ -173,8 +173,7 @@ class App extends React.Component {
       <div>
         <IdleTimer
           ref={ref => {this.idleTimer=ref}}
-          //timeout={21600000} six hours
-          timeout={10000} //10 s
+          timeout={21600000} //six hours
           onIdle={this.handleOnIdle}
         />
 
