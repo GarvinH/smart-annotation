@@ -1,10 +1,12 @@
 import React from "react";
 import _ from "lodash";
 import { Button } from "react-bootstrap";
+import IdleTimer from "react-idle-timer"
 
 import NoteSelector from "./components/NoteSelector/NoteSelector";
 import Notes from "./backend/Notes/notes";
 import NoteEditor from "./components/NoteEditor/NoteEditor.js";
+import { ipcRenderer } from "electron";
 
 class App extends React.Component {
   constructor(props) {
@@ -149,6 +151,10 @@ class App extends React.Component {
     this.setNoteEditor(-1, -1, false);
   };
 
+  handleOnIdle = () => {
+    ipcRenderer.send('send-notification')
+  }
+
   render() {
     const {
       notes,
@@ -164,7 +170,14 @@ class App extends React.Component {
         : { id: -1 };
 
     return (
-      <>
+      <div>
+        <IdleTimer
+          ref={ref => {this.idleTimer=ref}}
+          //timeout={21600000} six hours
+          timeout={10000} //10 s
+          onIdle={this.handleOnIdle}
+        />
+
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
           {showNoteEditor && (
             <Button
@@ -204,7 +217,7 @@ class App extends React.Component {
             connectNotes={this.connectNotes}
           />
         )}
-      </>
+      </div>
     );
   }
 }

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, protocol } = require('electron')
+const { app, BrowserWindow, protocol, Notification, ipcMain } = require('electron')
 const path = require("path")
 const isDev = require("electron-is-dev")
 
@@ -22,6 +22,14 @@ function createWindow () {
   // Open the DevTools.
   win.webContents.openDevTools()
 }
+
+ipcMain.on('send-notification', (evt, arg) => {
+  const notification = {
+    title: "Message from eAnnotate: You've been idle",
+    body: "Don't forget to come back!"
+  }
+  new Notification(notification).show()
+})
 
 app.whenReady().then(() => {
   protocol.registerFileProtocol('file', (request, callback) => {
@@ -52,5 +60,8 @@ app.on('activate', () => {
   }
 })
 
+app.setLoginItemSettings({
+  openAtLogin: true,
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
