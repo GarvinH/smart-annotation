@@ -34,7 +34,7 @@ function createWindow() {
   win.maximize();
 
   // Open the DevTools.
-  win.webContents.openDevTools();
+  isDev && win.webContents.openDevTools();
 }
 
 ipcMain.on("send-notification", (evt, arg) => {
