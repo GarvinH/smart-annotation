@@ -98,7 +98,7 @@ export default class NoteEditor extends React.Component {
     const { updateNotes } = this.props;
 
     return (
-      <div style={{ textAlign: "left" }}>
+      <div style={{ textAlign: "left", padding: "1rem" }}>
         <header style={{ marginBottom: "1rem" }}>
           <Button
             style={{ float: "right" }}
@@ -120,10 +120,10 @@ export default class NoteEditor extends React.Component {
           >
             Save
           </Button>
-          <h2 style={{ paddingLeft: "30px" }}>{noteTitle}</h2>
+          <h2>{noteTitle}</h2>
           <Form>
             <Form.Row>
-              <Col style={{ display: "flex", alignItems: "center" }} >
+              <Col style={{ display: "flex", alignItems: "center" }}>
                 <Form.Label
                   style={{
                     width: "fit-content",
