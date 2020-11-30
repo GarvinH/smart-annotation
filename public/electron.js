@@ -35,6 +35,8 @@ function createWindow() {
 
   // Open the DevTools.
   isDev && win.webContents.openDevTools();
+
+  return win;
 }
 
 ipcMain.on("send-notification", (evt, arg) => {
