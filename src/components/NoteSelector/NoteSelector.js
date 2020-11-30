@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import _ from "lodash";
 import { importance_markers } from "../ImportanceMarkers/ImportanceMarkers.js";
+import { remote } from "electron";
 
 const sortDateOldNew = (notes) => _.sortBy(notes, (note) => note.id); //actual notes within a topic
 
@@ -252,8 +253,17 @@ export default class NoteSelector extends React.Component {
     ));
 
     return (
-      <Fragment>
-        <h1 style={{ textAlign: "center" }}>Topic/Note Selector</h1>
+      <div style={{ padding: "1rem" }}>
+        <div>
+          <h1 style={{ display: "inline-block" }}>Topic/Note Selector</h1>
+          <Button
+            variant="dark"
+            style={{ float: "right" }}
+            onClick={() => remote.getCurrentWindow().minimize()}
+          >
+            Minimize
+          </Button>
+        </div>
         <br />
         <Form>
           <Form.Row>
@@ -322,7 +332,7 @@ export default class NoteSelector extends React.Component {
             </Col>
           </Form.Row>
         </Form>
-      </Fragment>
+      </div>
     );
   }
 }
